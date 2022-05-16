@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="#">
+    <title>Polytopia</title>
+</head>
+<body>
+    <div id="zoomBar"><span onclick="game.zoom('plus', document.body.style.zoom)">&plus;</span><br><span onclick="game.zoom('minus', document.body.style.zoom)">&minus;</span></div>
+    <script src="./scripts/perlin.js"></script>
+    <script src="./scripts/objects.js"></script>
+    <script src="./scripts/game.js"></script>
+    <script>
+        game.initialiseGame();
+    </script>
+</body>
+</html>

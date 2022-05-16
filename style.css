@@ -1,0 +1,43 @@
+body {
+    padding: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-image: linear-gradient(#df1e7e, #f07e2b, #ffdc85); */
+    background-image: url(./assets/terrain/sky.jpeg);
+    user-select: none;
+    overflow: hidden;
+    zoom: 1;
+}
+
+#grid-container{
+  position: absolute;
+  transform: rotate(45deg) skew(-20deg, -20deg);
+  display: grid;
+  background-color: lightgray;
+  border: 0.5px solid rgb(39, 39, 39);
+}
+
+.grid-items {
+    border: 0.5px solid rgb(39, 39, 39);
+}
+
+.grid-items div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-45deg);
+}
+
+#zoomBar {
+    position: fixed;
+    right: 1vw;
+    top: 41vh;
+    background-color: gray;
+    opacity: 0.8;
+    padding: 0.5vh;
+    border-radius: 4vh;
+    font-size: 8vh;
+    color: white;
+    z-index: 10;
+}
