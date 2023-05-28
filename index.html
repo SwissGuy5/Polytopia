@@ -1,20 +1,678 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="#">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Polytopia</title>
+    <script defer src="./scripts/simplexNoise.js"></script>
+    <script defer src="./scripts/objects.js"></script>
+    <script defer src="./scripts/game.js"></script>
+    <script defer src="./scripts/main.js"></script>
 </head>
+
 <body>
-    <div id="zoomBar"><span onclick="game.zoom('plus', document.body.style.zoom)">&plus;</span><br><span onclick="game.zoom('minus', document.body.style.zoom)">&minus;</span></div>
-    <script src="./scripts/perlin.js"></script>
-    <script src="./scripts/objects.js"></script>
-    <script src="./scripts/game.js"></script>
-    <script>
-        game.initialiseGame();
-    </script>
+    <div id="zoomBar">
+        <span onclick="game.zoom('plus', document.body.style.zoom)">
+            &plus;
+        </span>
+        <br>
+        <span onclick="game.zoom('minus', document.body.style.zoom)">
+            &minus;
+        </span>
+    </div>
+    <div id="statsBar">
+        <div>
+            <span>
+                <p>Score</p>
+                <p id="score">0</p>
+            </span>
+            <span>
+                <p>Stars</p>
+                <p id="stars">0</p>
+            </span>
+            <span>
+                <p>Turn</p>
+                <p id="turn">0/30</p>
+            </span>
+            <span>
+                <p>Tribe Turn</p>
+                <p id="tribeTurn">X</p>
+            </span>
+        </div>
+    </div>
+    <div id="closeBtn">
+        <img src="./assets/Misc/dropdown.png" alt="dropdown" onclick="game.display(1)">
+    </div>
+    <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+    <svg id="techTree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 1000 1000" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+        <defs>
+            <radialGradient id="techtreev5-s-path6-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path6-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path6-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path6-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path7-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path7-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path7-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path7-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path8-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path8-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path8-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path8-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path9-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path9-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path9-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path9-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path10-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path10-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path10-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path10-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path16-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path16-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path16-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path16-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path17-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path17-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path17-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path17-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path18-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path18-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path18-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path18-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path19-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path19-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path19-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path19-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path20-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path20-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path20-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path20-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path26-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path26-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path26-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path26-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path27-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path27-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path27-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path27-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path28-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path28-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path28-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path28-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path29-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path29-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path29-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path29-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path30-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path30-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path30-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path30-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path39-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path39-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path39-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path39-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path40-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path40-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path40-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path40-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path41-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path41-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path41-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path41-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path42-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path42-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path42-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path42-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path43-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path43-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path43-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path43-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path47-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path47-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path47-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path47-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path48-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path48-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path48-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path48-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path49-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path49-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path49-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path49-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path50-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path50-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path50-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path50-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+            <radialGradient id="techtreev5-s-path51-fill" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path51-fill-0" offset="0%" stop-color="#cde2f0" />
+                <stop id="techtreev5-s-path51-fill-1" offset="48.416273%" stop-color="#6eafdb" />
+                <stop id="techtreev5-s-path51-fill-2" offset="100%" stop-color="#31a8f7" />
+            </radialGradient>
+        </defs>
+        <g id="techtreev5-u-nxvf0kieewncrvhhdu4mx" transform="matrix(.16-.99 0.99 0.16 356.53 198.14)">
+            <path id="techtreev5-s-path1" d="M-21.46018,12.38938l42.92035-24.77876" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-z5mbcelxy_cz-siskb13n" transform="matrix(.22-.97 0.97 0.22 402.89 337.74)">
+            <path id="techtreev5-s-path2" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-g-7igxep_nx8mpy5y10lo" transform="matrix(-.87 0.5 0.5 0.87 347.63 405.58)">
+            <path id="techtreev5-s-path3" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-uzadf6xemcp_tyrlk0fea" transform="matrix(-.87 0.5 0.5 0.87 201.28 400.08)">
+            <path id="techtreev5-s-path4" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-wuiwikgs1wc7vwlrxan7t" transform="matrix(.31-.95 0.95 0.31 464.06 460.9)">
+            <path id="techtreev5-s-path5" d="M-12.38938,13.93805l24.77876-27.87611" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-izj0att-mtbcsnppqwi4f" transform="matrix(.79 0.62-.62 0.79 273.97 403.18)">
+            <path id="techtreev5-s-path6" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path6-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-hh7ypbfknpsexbk89awqj" transform="matrix(-.79-.62-.62 0.79 377.63 269.04)">
+            <path id="techtreev5-s-path7" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path7-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-qztfmcsmf7y2rhhkdijrs" transform="matrix(-.79-.62-.62 0.79 421.14 407.5)">
+            <path id="techtreev5-s-path8" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path8-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-xj7xegchbt0pltkvk-51r" transform="matrix(-.79-.62-.62 0.79 325.39 131.67)">
+            <path id="techtreev5-s-path9" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path9-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-h34aoxruuaai9wiy4mwlm" transform="matrix(.79 0.62-.62 0.79 129.14 399.08)">
+            <path id="techtreev5-s-path10" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path10-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-5lj95mac3pech_ctpj1x7" transform="matrix(-.87-.48 0.48-.87 160.67 550.98)">
+            <path id="techtreev5-s-path11" d="M-21.46018,12.38938l42.92035-24.77876" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-lzs2j15vytkh4cw0g0rdh" transform="matrix(-.86-.52 0.52-.86 307.75 545.73)">
+            <path id="techtreev5-s-path12" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-ajjtlbhjtveamcd3r7dej" transform="matrix(.21 0.98 0.98-.21 355.2 619.25)">
+            <path id="techtreev5-s-path13" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-ly_i7avkkm4yi9dttxewi" transform="matrix(.21 0.98 0.98-.21 304.75 756.75)">
+            <path id="techtreev5-s-path14" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-onqlrie-_lmccx9yatqzb" transform="matrix(-.81-.59 0.59-.81 443.8 525.61)">
+            <path id="techtreev5-s-path15" d="M-12.38938,13.93805l24.77876-27.87611" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-q78h9tpgjyo8zb4vneb75" transform="matrix(.83-.56 0.56 0.83 330.16 688.56)">
+            <path id="techtreev5-s-path16" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path16-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-5gcqnhms2ts-hek8qx177" transform="matrix(-.83 0.56 0.56 0.83 234.92 552.71)">
+            <path id="techtreev5-s-path17" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path17-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-cmsl83-xwzqwsmdvfvsd9" transform="matrix(-.83 0.56 0.56 0.83 379.75 549.93)">
+            <path id="techtreev5-s-path18" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path18-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-0sxj37g8fgwvu_g3fdkld" transform="matrix(-.83 0.56 0.56 0.83 87.83 555.76)">
+            <path id="techtreev5-s-path19" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path19-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-aa8wl2tbptgihaqnnpucc" transform="matrix(.83-.56 0.56 0.83 281.5 825.04)">
+            <path id="techtreev5-s-path20" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path20-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-_rtg__kq0o8gjzonuwte7" transform="matrix(-.67 0.74-.74-.67 452.15 841.63)">
+            <path id="techtreev5-s-path21" d="M-21.46018,12.38938l42.92035-24.77876" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-l9har8sr8myw7tdkbau1e" transform="matrix(-.72 0.69-.69-.72 489.3 699.32)">
+            <path id="techtreev5-s-path22" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-ll3w6bcthvuiq6k9cj-tv" transform="matrix(1 0.05 0.05-1 572.6 672.52)">
+            <path id="techtreev5-s-path23" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-i-25cxc1qfugj0tofkvhb" transform="matrix(1 0.05 0.05-1 692.35 756.83)">
+            <path id="techtreev5-s-path24" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-fu1s49thml8kvoro5snnq" transform="matrix(-.78 0.63-.63-.78 505.08 562.71)">
+            <path id="techtreev5-s-path25" d="M-12.38938,13.93805l24.77876-27.87611" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-ekxdrfi8po0qtguh5lwt7" transform="matrix(-.33-.95 0.95-.33 633.06 714.65)">
+            <path id="techtreev5-s-path26" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path26-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-zj4oc4k3ekgfxvjganhh1" transform="matrix(.33 0.95 0.95-.33 475.33 770.33)">
+            <path id="techtreev5-s-path27" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path27-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-waqojzeiqvdvuxrgvioga" transform="matrix(.33 0.95 0.95-.33 511.99 630.86)">
+            <path id="techtreev5-s-path28" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path28-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-dhskrkzh8xcm0olxh6yue" transform="matrix(.33 0.95 0.95-.33 442.07 914.35)">
+            <path id="techtreev5-s-path29" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path29-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-oxk3orfa46d9l3zuv4ku7" transform="matrix(-.33-.95 0.95-.33 752.29 796.97)">
+            <path id="techtreev5-s-path30" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path30-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-qobfdm2mjviyr4itu-9ca" transform="matrix(.99-.16 0.16 0.99 751.62 272.13)">
+            <path id="techtreev5-s-path31" d="M-21.46018,12.38938l42.92035-24.77876" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-ooxhayrhb7oovp7e0d-bl" transform="matrix(1-.09 0.09 1 633.19 359.36)">
+            <path id="techtreev5-s-path32" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-p0jlj7nunpplgdcy-of" transform="matrix(-.74-.67-.67 0.74 551.59 327.76)">
+            <path id="techtreev5-s-path33" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-gg36q8xpkxeyaxlph13v" transform="matrix(.48 0.87-.87 0.48 801.39 666.19)">
+            <path id="techtreev5-s-path34" d="M-21.46018,12.38938l42.92035-24.77876" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-8ewwvxadz-w3jik57keaz" transform="matrix(.42 0.91-.91 0.42 678.92 584.73)">
+            <path id="techtreev5-s-path35" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-bwvmrhzugiz0rql2iomyk" transform="matrix(.37-.93-.93-.37 680.7 497.25)">
+            <path id="techtreev5-s-path36" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-nihw4dcwxnpmtooy6a8gt" transform="matrix(.37-.93-.93-.37 799.41 411.47)">
+            <path id="techtreev5-s-path37" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-7jf3u5rpamyeb5yg6snla" transform="matrix(.34 0.94-.94 0.34 554.89 525.34)">
+            <path id="techtreev5-s-path38" d="M-12.38938,13.93805l24.77876-27.87611" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-bd1q-5-gf0dwx2sfyxh4d" transform="matrix(-1 0 0-1 740.22 453.8)">
+            <path id="techtreev5-s-path39" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path39-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-iqqom5uuatbm503j-2k_w" transform="matrix(1 0 0-1 740.55 625.73)">
+            <path id="techtreev5-s-path40" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path40-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-l0ikf5wbqfwt1nyuvnkga" transform="matrix(1 0 0-1 621.58 540.99)">
+            <path id="techtreev5-s-path41" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path41-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-xgw4m0e2tkz4f-fezfvuc" transform="matrix(1 0 0-1 866.86 699.4)">
+            <path id="techtreev5-s-path42" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path42-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-mzdxs3qlltqo2dlvlbkfc" transform="matrix(-1 0 0-1 856.87 367.86)">
+            <path id="techtreev5-s-path43" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path43-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-3fw-bkl1r2ajdbpzxr7zz" transform="matrix(-.74-.67-.67 0.74 511.59 186.88)">
+            <path id="techtreev5-s-path44" d="M-19.46903,11.9469l38.93805-23.89381" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-owkquxxm5pbbm_2o8jlbs" transform="translate(534.96 455.6)">
+            <path id="techtreev5-s-path45" d="M-12.38938,13.93805l24.77876-27.87611" fill="#fff" fill-opacity="0"
+                stroke="#fff" />
+        </g>
+        <g id="techtreev5-u-ktbdjzek37odto7_fwcyn" transform="translate(500 500)">
+            <path id="techtreev5-s-path46" d="M0,38.2L50,0l50,38.2L80.9,100h-61.8Z" transform="translate(-50-50)"
+                fill="#986a4c" />
+        </g>
+        <g id="techtreev5-u-caw65di0kipko8fc5m0bl" transform="matrix(-.34 0.94-.94-.34 531.11 256.96)">
+            <path id="techtreev5-s-path47" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path47-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-wi3jf4-camm681aoyfdjm" transform="matrix(.34-.94-.94-.34 689.84 314.63)">
+            <path id="techtreev5-s-path48" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path48-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-upgx83d-rvw-uuropmrti" transform="matrix(.34-.94-.94-.34 572.47 398.28)">
+            <path id="techtreev5-s-path49" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path49-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-ts6dojqixiyvf8phom5ok" transform="matrix(.34-.94-.94-.34 805.21 221.97)">
+            <path id="techtreev5-s-path50" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path50-fill)" stroke="#fff" stroke-width="2" />
+        </g>
+        <g id="techtreev5-u-aco1d4fbhwd3dyamsbg3a" transform="matrix(-.34 0.94-.94-.34 490.26 117.97)">
+            <path id="techtreev5-s-path51" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+                transform="translate(-50-50)" fill="url(#techtreev5-s-path51-fill)" stroke="#fff" stroke-width="2" />
+        </g><text id="techtreev5-s-text1" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(285.273583 159.307592)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan1" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Mathematics
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text2" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(834.528694 734.168548)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan2" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Diplomacy
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text3" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(582.692835 570.789875)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan3" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Organisation
+]]>
+            </tspan>
+            <tspan id="techtreev5-s-tspan4" x="0" y="28" font-weight="400" stroke-width="0">
+                <![CDATA[
+ 
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text4" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(715.198014 489.327837)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan5" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Farming
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text5" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(817.724171 396.578181)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan6" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Construction 
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text6" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(714.824132 662.356706)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan7" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Strategy
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text7" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(781.095835 257.111766)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan8" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Chivalry
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text8" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(473.017139 153.237612)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan9" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Trade
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text9" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(512.186797 294.279329)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan10" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Roads
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text10" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(552.533629 430.887287)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan11" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Riding
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text11" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(397.638085 438.237566)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan12" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Hunting
+]]>
+            </tspan>
+            <tspan id="techtreev5-s-tspan13" x="0" y="14" font-weight="400" stroke-width="0">
+                <![CDATA[
+ 
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text12" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(352.508245 302.524383)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan14" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Forestry
+]]>
+            </tspan>
+            <tspan id="techtreev5-s-tspan15" x="0" y="28" font-weight="400" stroke-width="0">
+                <![CDATA[
+ 
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text13" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(250.704743 435.188444)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan16" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Archery
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text14" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(92.901711 429.941715)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan17" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Spiritualism
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text15" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(659.705705 349.956706)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan18" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Free Spirit
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text16" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(484.610788 666.274)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan19" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Climbing
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text17" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(611.388358 752.354741)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan20" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Mining
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text18" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(725.084685 832.731015)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan21" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Smithery
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text19" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(441.797995 801.767453)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan22" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Meditation
+]]>
+            </tspan>
+            <tspan id="techtreev5-s-tspan23" x="0" y="28" font-weight="400" stroke-width="0">
+                <![CDATA[
+ 
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text20" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(408.63 943.806708)" fill="#fff" stroke-width="0">
+            <tspan id="techtreev5-s-tspan24" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Philosophy
+]]>
+            </tspan>
+            <tspan id="techtreev5-s-tspan25" x="0" y="28" font-weight="400" stroke-width="0">
+                <![CDATA[
+ 
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text21" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(57.203994 592.737994)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan26" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Aquatism
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text22" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(209.923757 590.591103)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan27" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Whaling
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text23" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(355.199994 586.609682)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan28" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Fishing
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text24" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(309.499993 725.71033)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan29" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Sailing
+]]>
+            </tspan>
+        </text><text id="techtreev5-s-text25" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
+            font-weight="400" font-style="italic" transform="translate(247.968108 857.456596)" fill="#fff"
+            stroke-width="0">
+            <tspan id="techtreev5-s-tspan30" y="0" font-weight="400" stroke-width="0">
+                <![CDATA[
+Navigation
+]]>
+            </tspan>
+        </text>
+    </svg>
+    <!-- </div> -->
+    <div id="menuBar">
+        <div>
+            <span>
+                <button onclick=""></button>
+                <p>Settings</p>
+            </span>
+            <span>
+                <button onclick=""></button>
+                <p>Game Stats</p>
+            </span>
+            <span>
+                <button onclick="game.display(3)"></button>
+                <p>Tech Tree</p>
+            </span>
+            <span>
+                <button onclick="game.nextTurn()"></button>
+                <p>End Turn</p>
+            </span>
+        </div>
+    </div>
+    <div id="bottomBar">
+        <div id="detailBar">
+            <div>
+                <img src="" alt="">
+                <p id="terrainDetail">Terrain</p>
+            </div>
+            <img src="./assets/Misc/dropdown.png" alt="dropdown" onclick="game.display(1)">
+        </div>
+        <div id="actionsBar">
+            <span>
+                <button onclick=""></button>
+                <p>Temple</p>
+            </span>
+            <span>
+                <button onclick=""></button>
+                <p>Port</p>
+            </span>
+        </div>
+    </div>
 </body>
+
 </html>

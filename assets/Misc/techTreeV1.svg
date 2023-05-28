@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1000"
+    height="1000" viewBox="0 0 1000 1000" xml:space="preserve">
+    <desc>Created with Fabric.js 4.6.0</desc>
+    <defs>
+    </defs>
+    <g transform="matrix(1 0 0 1 499.78 499.78)" id="EFnZuksCsNmF0xI2cL3Wk">
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-500, -500)"
+            d="M 0 0 L 1000.00006 0 L 1000.00006 1000.00006 L 0 1000.00006 z" stroke-linecap="round" />
+    </g>
+    <g transform="matrix(1 0 0 1 500 500)" id="ktBDJzeK37Odto7_fwCyN">
+        <path
+            style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(152,106,76); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 0 38.2 L 50 0 L 100 38.2 L 80.9 100 L 19.10000000000001 100 z" stroke-linecap="round" />
+    </g>
+    <g transform="matrix(1 0 0 1 773.97 449.53)" id="ODRSHM326DeRrcyVXov4f">
+        <radialGradient id="SVGID_246" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_246); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(1 0 0 1 892.44 362.47)" id="xS5qTzx4fV7w7KidSi4N3">
+        <radialGradient id="SVGID_247" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_247); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(1 0 0 1 657.32 535.47)" id="xgHlwInNBxgKn-CgbPifp">
+        <radialGradient id="SVGID_260" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_260); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-1 0 0 1 775.79 622.53)" id="8uS1plpfUL5iq04o-GNvn">
+        <radialGradient id="SVGID_252" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_252); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-1 0 0 1 892.44 708.47)" id="vjkIFzmqd2dUpE0DB9hiE">
+        <radialGradient id="SVGID_254" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_254); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.83 0.56 0.56 0.83 233.86 550.32)" id="6U480PVcFDkOR7kcSPEFX">
+        <radialGradient id="SVGID_291" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_291); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.83 0.56 0.56 0.83 86.96 544.39)" id="BTkx4aLbx0SoprZYnvCPE">
+        <radialGradient id="SVGID_292" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_292); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.83 0.56 0.56 0.83 378.7 556.14)" id="p4V_kQJ4OjviEhVRPmXAV">
+        <radialGradient id="SVGID_293" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_293); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.83 -0.56 0.56 0.83 329.09 694.76)" id="wcVbNyWXEjlxYfeIhNA5c">
+        <radialGradient id="SVGID_294" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_294); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.83 -0.56 0.56 0.83 280.44 831.24)" id="Hnqp9nmosfJ-RIHxtTmVs">
+        <radialGradient id="SVGID_295" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_295); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.79 -0.62 -0.62 0.79 368.96 262.46)" id="R_AsY7vubg8hYFiOnlwgC">
+        <radialGradient id="SVGID_315" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_315); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.79 -0.62 -0.62 0.79 328.3 119.28)" id="RtN8v3E6zp0cU8Xa3oMbi">
+        <radialGradient id="SVGID_314" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_314); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.79 -0.62 -0.62 0.79 408.18 402.01)" id="EUs0HCyAr-ppSIVPJ0FVF">
+        <radialGradient id="SVGID_313" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_313); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.79 0.62 -0.62 0.79 261.01 397.66)" id="ttOleCGdeGFpFwyDzxCpl">
+        <radialGradient id="SVGID_312" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_312); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.79 0.62 -0.62 0.79 116.18 392.57)" id="QF-vxNmeGFpzNvaLiLIjZ">
+        <radialGradient id="SVGID_311" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_311); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.34 -0.94 -0.94 -0.34 700.93 314.71)" id="wi3jf4-CAMm681aoYfdjM">
+        <radialGradient id="SVGID_327" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_327); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.34 -0.94 -0.94 -0.34 824.53 231.8)" id="TS6dOJQiXiyvf8pHoM5ok">
+        <radialGradient id="SVGID_322" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_322); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.34 -0.94 -0.94 -0.34 580.33 395.14)" id="uPGX83d-Rvw-uUroPmrtI">
+        <radialGradient id="SVGID_323" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_323); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.34 0.94 -0.94 -0.34 538.97 253.82)" id="caW65Di0kiPkO8fc5m0Bl">
+        <radialGradient id="SVGID_324" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_324); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.34 0.94 -0.94 -0.34 498.12 114.82)" id="ACo1D4FbHwD3dyAMsBG3a">
+        <radialGradient id="SVGID_325" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_325); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.29 0.96 0.96 -0.29 489.46 764.53)" id="k_Vbh16o1-mYMAvqta-us">
+        <radialGradient id="SVGID_266" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_266); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.29 0.96 0.96 -0.29 440.82 903.33)" id="DfH6YCEB2xsJuHOONh4uI">
+        <radialGradient id="SVGID_267" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_267); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(0.29 0.96 0.96 -0.29 537.55 627.8)" id="k_2IOcIwT5DkZ0njDChuy">
+        <radialGradient id="SVGID_268" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_268); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.29 -0.96 0.96 -0.29 655.49 715.67)" id="AJdm6GUty-_haJ68qoizE">
+        <radialGradient id="SVGID_269" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_269); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+    <g transform="matrix(-0.29 -0.96 0.96 -0.29 771.82 802.13)" id="2SaTk69k3TajbkcZUOzTN">
+        <radialGradient id="SVGID_270" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1 0 0 1 0 0)"
+            cx="50.00000000000001" cy="50" r="50" fx="50.00000000000001" fy="50">
+            <stop offset="0%" style="stop-color:#CDE2F0;stop-opacity: 1" />
+            <stop offset="48.41627334748699%" style="stop-color:#6EAFDB;stop-opacity: 1" />
+            <stop offset="100%" style="stop-color:#31A8F7;stop-opacity: 1" />
+        </radialGradient>
+        <path
+            style="stroke: rgb(255,255,255); stroke-width: 2; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: url(#SVGID_270); fill-rule: nonzero; opacity: 1;"
+            vector-effect="non-scaling-stroke" transform=" translate(-50, -50)"
+            d="M 50 0 C 77.6 0 100 22.4 100 50 C 100 77.6 77.6 100 50 100 C 22.4 100 0 77.6 0 50 C 0 22.4 22.4 0 50 0 z"
+            stroke-linecap="round" />
+    </g>
+</svg>
