@@ -25,24 +25,23 @@ p {
     border: 0.5px solid rgb(39, 39, 39);
 }
 
-.grid-items {
+.grid-item {
     position: relative;
-    /* outline: 1px solid black; */
-    /* z-index: 1;
-    background-position: center;
-    background-size: cover; */
-    /* border: 0.5px solid rgb(39, 39, 39); */
 }
 
-.grid-items::before {
+.grid-item::before {
     content: "";
     display: block;
     padding-top: 100%;
     /* border: 0.5px solid rgb(39, 39, 39); */
 }
 
+.grid-item > * {
+    pointer-events: none; /* All Child Elements Unclickable */
+}
+
 /* Terrain Tiles */
-.terrain {
+.tile {
     position: absolute;
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -64,6 +63,14 @@ p {
     width: 230%;
     height: 230%;
     background-size: 67.5% 100%;
+}
+
+.cloud {
+    right: -100%;
+    bottom: -100%;
+    width: 250%;
+    height: 250%;
+    background-size: 59% 100%;
 }
 
 /* Terrain Resource Tiles*/
@@ -153,19 +160,23 @@ p {
     transform: rotate(-45deg);
 }
 
-/* .grid-items div {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: rotate(-45deg);
-} */
+.text {
+    right: -50%;
+    bottom: 0%;
+    background-size: 62% 100%;
+}
 
-/* .circle {
-    position: absolute;
-    background-color: black;
-    border-radius: 50%;
-} */
+.hidden {
+    display: none;
+}
+
+/* Building Tiles */
+.building {
+    right: -10%;
+    bottom: -10%;
+    width: 140%;
+    height: 140%;
+}
 
 /* Stats Bar */
 #statsBar {
@@ -198,7 +209,7 @@ p {
     font-size: 2.5vh;
 }
 
-#score, #stars, #turn, #tribeTurn {
+#score, #balance, #turn, #tribeTurn {
     font-size: 4vh;
     margin-top: -2vh;
 }
@@ -327,6 +338,8 @@ p {
     border: 0.15vw solid white;
     border-radius: 50%;
     background-color: black;
+    /* background-color: rgb(16, 141, 236); */
+    color: white;
     width: 4vh;
     height: 4vh;
     opacity: .85;
@@ -338,12 +351,7 @@ p {
 
 /* Tech Tree */
 svg {
-    /* position: fixed; */
     display: none;
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* top: 0;
-    right: 0; */
     display: block;
     width: 100vw;
     height: 100vh;

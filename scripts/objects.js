@@ -1,5 +1,3 @@
-let count = 0;
-// Main Tile
 class Tile {
     /**
      * Tile Object
@@ -9,10 +7,12 @@ class Tile {
         - field
         - water
         - ocean
+     * @param {string} terrainResource
         - mountain
-        - village
+        - forest
         - city
-     * @param {object} border city it belongs to
+        - village
+        - null
      * @param {string} resource 
         - fruit
         - crop
@@ -22,24 +22,21 @@ class Tile {
         - fish
         - whale
         - null
-     * @param {*} unit 
-     * @param {*} cloud 
-     * @param {string} city 
-        - null (normal tile)
-        - TRIBE_NAME (city)
+     * @param {string} biome
      */
-    constructor(x, y, terrain, unit, cloud, biome) {
+    constructor(x, y, terrain) {
         this.x = x;
         this.y = y;
+        this.terrain = terrain;
         this.terrainResource = null;
         this.resource = null;
-        this.terrain = terrain;
         this.border = null;
-        this.unit = unit;
-        this.cloud = cloud;
-        this.biome = biome;
+        this.unit = null;
+        this.exploredBy = [];
+        this.biome = null;
         this.city = null;
         this.road = false;
+        this.building = null;
     }
 
     get terrainAsset() {
@@ -67,7 +64,11 @@ class Tile {
             case 'mountain':
                 return `./assets/Terrain/Mountains/Mountain_${this.biome}.png`;
             case 'city':
-                return `./assets/Buildings/${this.city.tribe.name}/Default/Houses/House_1.png`;
+                if (this.city.type == 'capital') {
+                    return `./assets/Buildings/${this.city.tribe.name}/Default/Houses/House_3.png`;
+                } else {
+                    return `./assets/Buildings/${this.city.tribe.name}/Default/Houses/House_1.png`;
+                }
             case 'village':
                 return './assets/Buildings/Common/Village.png';
             default:
@@ -93,38 +94,66 @@ class Tile {
                 return '';
         }
     }
+
+    get cloudAsset() {
+        return `./assets/Terrain/Cloud.png`; 
+    }
+
+    get buildingAsset() {
+        let actionAsset = null;
+        barActions.forEach(barAction => {
+            if (barAction.name == this.building) {
+                actionAsset = barAction.asset;
+            }
+        })
+        if (actionAsset) {
+            return actionAsset;
+        } else {
+            return '';
+        }
+    }
 }
 
-// // Terrain
-// class Field extends Terrain {
-//     constructor(position, tribe, suitability, outerCity) {
-//         super(position, tribe);
-//         this.suitability = suitability;
-//         this.outerCity = outerCity;
-//         this.defaultColor = '#808080';
-//     }
+class Tech {
+    /**
+     * Tech Template
+     * @param {String} name Name of Tech
+     * @param {String} type
+        - Improvement
+        - Unit
+        - Building
+        - Special (Other)
+     * @param {Object} tier Tier of the technology (1 to 3)
+     */
+    constructor(name, tier) {
+        this.name = name;
+        // this.type = type;
+        this.tier = tier;
+        this.unlocked = false;
+    }
 
-//     getColor() {
-//         switch (this.tribe) {
-//             case 'neutral':
-//                 return '#83c95b';
-//             case 'imperius':
-//                 return '#83c95b';
-//             case 'bardur':
-//                 return '#2e6e2e'
-//             case 'oumaji':
-//                 return '#faf3a2';
-//             case 'polaris':
-//                 return '#c9f5f0';
-//             case 'temp':
-//                 return "#ff0000";
-//             default:
-//                 return '#808080';
-//         }
-//     }
-// }
+    /**
+     * Get the price of a tech
+     * @param {Number} numOfCities tribe.cities.length
+     * @returns 
+     */
+    price(numOfCities) {
+        let tierPrice;
+        switch (this.tier) {
+            case 1:
+                tierPrice = 5;
+                break;
+            case 2:
+                tierPrice = 6;
+                break;
+            case 3:
+                tierPrice = 7;
+                break;
+        }
+        return tierPrice * numOfCities + 4
+    }
+}
 
-// Tribes
 class Tribe {
     /**
      * Tribe for each player
@@ -149,10 +178,46 @@ class Tribe {
     constructor(name) {
         this.name = name;
         this.cities = [];
-        this.visibleTiles = [];
+        this.units = [];
+        this.balance = 4;
         this.multipliers = Tribe.innerMultipliers;
-        this.startingTech = [];
+        this.techs = [
+            new Tech ('climbing', 1),
+            new Tech ('fishing', 1),
+            new Tech ('hunting', 1),
+            new Tech ('organisation', 1),
+            new Tech ('riding', 1),
+            new Tech ('archery', 2),
+            new Tech ('farming', 2),
+            new Tech ('forestry', 2),
+            new Tech ('freeSpirit', 2),
+            new Tech ('meditation', 2),
+            new Tech ('mining', 2),
+            new Tech ('roads', 2),
+            new Tech ('sailing', 2),
+            new Tech ('strategy', 2),
+            new Tech ('whaling', 2),
+            new Tech ('aquatism', 3),
+            new Tech ('chivalry', 3),
+            new Tech ('construction', 3),
+            new Tech ('diplomacy', 3),
+            new Tech ('mathematics', 3),
+            new Tech ('navigation', 3),
+            new Tech ('smithery', 3),
+            new Tech ('spiritualism', 3),
+            new Tech ('trade', 3),
+            new Tech ('philosophy', 3),
+        ];
+        this.unlockStartingTechs();
         // this.setMultipliers();
+    }
+
+    get income() {
+        let income = 0;
+        this.cities.forEach(city => {
+            income += city.cityIncome;
+        })
+        return income;
     }
 
     static innerMultipliers = {
@@ -178,6 +243,58 @@ class Tribe {
         'fish': 0.5,
         'whale': 0.33
     };
+
+    unlockStartingTechs() {
+        let startingTech = null;
+        switch (this.name) {
+            case 'XinXi':
+                startingTech = 'climbing';
+                break;
+            case 'Imperius':
+                startingTech = 'organisation';
+                break;
+            case 'Bardur':
+                startingTech = 'hunting';
+                break;
+            case 'Oumaji':
+                startingTech = 'riding';
+                break;
+            case 'Kickoo':
+                startingTech = 'fishing';
+                break;
+            case 'Hoodrick':
+                startingTech = 'archery';
+                break;
+            // case 'Luxidoor':
+            //     break;
+            case 'Vengir':
+                startingTech = 'smithery';
+                break;
+            case 'Zebasi':
+                startingTech = 'farming';
+                break;
+            case 'AiMo':
+                startingTech = 'meditation';
+                break;
+            case 'Quetzali':
+                startingTech = 'strategy';
+                break;
+            case 'Yadakk':
+                startingTech = 'roads';
+                break;
+            case 'Ancients':
+                this.balance = 999;
+                this.techs.forEach(tech => {
+                    tech.unlocked = true;
+                })
+                break;
+        };
+        this.techs.forEach(tech => {
+            if (tech.name == startingTech) {
+                tech.unlocked = true;
+            }
+        })
+    }
 
     setMultipliers() {
         let proportionalAdjustements = {};
@@ -216,6 +333,9 @@ class Tribe {
                 break;
             case 'Yadakk':
                 proportionalAdjustements = {'mountain': 0.5, 'forest': 0.5, 'fruit': 1.5};
+                break;
+            case 'Ancients':
+                proportionalAdjustements = {};
                 break;
         }
 
@@ -268,15 +388,250 @@ class City {
         this.y = y;
         this.type = type;
         this.tribe = tribe;
-        this.population = 0;
+        this.population = 1;
         this.tiles = [];
         this.upgrades = [];
-        this.units = 0;
-        this.income = 0;
+        this.centroid = null;
+    }
+
+    get level() {
+        let level = 0;
+        let levelPopulation = this.population;
+        while (true) {
+            if (levelPopulation - (level + 1) >= 0) {
+                levelPopulation -= level + 1;
+                level++;
+            } else {
+                return level;
+            }
+        }
+    }
+
+    get cityIncome() {
+        return this.level;
+    }
+
+    getHubPopulation(hubName, tile) {
+        let buildingToFind = null;
+        switch(hubName) {
+            case 'customsHouse':
+                buildingToFind = 'port';
+                break;
+            case 'forge':
+                buildingToFind = 'mine';
+                break;
+            case 'sawmill':
+                buildingToFind = 'lumberHut';
+                break;
+            case 'windmill':
+                buildingToFind = 'farm';
+                break;
+        }
+        let resourceCount = 0;
+        game.getSurroundingTiles(tile).forEach(borderingTile => {
+            if (borderingTile.building == buildingToFind) {
+                resourceCount++;
+            }
+        });
+        console.log(resourceCount);
+        return resourceCount;
     }
 }
 
-// Troops
+// Units
+class Unit {
+    /**
+     * Unit Constructor
+     * @param {*} name Name of the unit, lower case
+     * @param {*} citySupport The city this unit is affiliated to
+     */
+    constructor(name, health, damage, defence, movement, range, skills, citySupport) {
+        this.name = name;
+        this.health = health;
+        this.damage = damage;
+        this.defence = defence
+        this.movement = movement;
+        this.range = range;
+        this.skills = skills;
+        this.citySupport = citySupport;
+        this.kills = 0;
+        this.promoted = false;
+    }
+}
 
+// Actions
+const barActions = [
+    // Resources
+    {
+        name: 'farm',
+        displayName: 'Farm',
+        type: 'resource',
+        price: 5,
+        techRequired: 'farming',
+        asset: './assets/Buildings/Common/Farm.png'
+    },
+    {
+        name: 'lumberHut',
+        displayName: 'Lumber Hut',
+        type: 'resource',
+        price: 2,
+        techRequired: 'forestry',
+        asset: './assets/Buildings/Common/Lumber_Hut.png'
+    },
+    {
+        name: 'mine',
+        displayName: 'Mine',
+        type: 'resource',
+        price: 5,
+        techRequired: 'mining',
+        asset: './assets/Buildings/Common/Mine.png'
+    },
+    {
+        name: 'port',
+        displayName: 'Port',
+        type: 'resource',
+        price: 10,
+        techRequired: 'sailing',
+        asset: './assets/Buildings/Common/Port.png'
+    },
+    {
+        name: 'growForest',
+        displayName: 'Grow Forest',
+        type: 'resource',
+        price: 5,
+        techRequired: 'spiritualism',
+        asset: ''
+    },
+    // Hubs
+    {
+        name: 'customsHouse',
+        displayName: 'Customs House',
+        type: 'hub',
+        price: 5,
+        techRequired: 'trade',
+        asset: './assets/Buildings/Common/Customs_House_1.png'
+    },
+    {
+        name: 'forge',
+        displayName: 'Forge',
+        type: 'hub',
+        price: 5,
+        techRequired: 'smithery',
+        asset: './assets/Buildings/Common/Forge_1.png'
+    },
+    {
+        name: 'sawmill',
+        displayName: 'Sawmill',
+        type: 'hub',
+        price: 5,
+        techRequired: 'mathematics',
+        asset: './assets/Buildings/Common/Sawmill_1.png'
+    },
+    {
+        name: 'windmill',
+        displayName: 'Windmill',
+        type: 'hub',
+        price: 2,
+        techRequired: 'construction',
+        asset: './assets/Buildings/Common/Windmill_1.png'
+    },
+    // Temples
+    {
+        name: 'temple',
+        displayName: 'Temple',
+        type: 'temple',
+        price: 20,
+        techRequired: 'freeSpirit',
+        asset: './assets/Buildings/Common/Temple_1.png'
+    },
+    {
+        name: 'forestTemple',
+        displayName: 'Forest Temple',
+        type: 'temple',
+        price: 15,
+        techRequired: 'spiritualism',
+        asset: './assets/Buildings/Common/Forest_Temple_1.png'
+    },
+    {
+        name: 'mountainTemple',
+        displayName: 'Mountain Temple',
+        type: 'temple',
+        price: 20,
+        techRequired: 'meditation',
+        asset: './assets/Buildings/Common/Mountain_Temple_1.png'
+    },
+    {
+        name: 'waterTemple',
+        displayName: 'Water Temple',
+        type: 'temple',
+        price: 20,
+        techRequired: 'aquatism',
+        asset: './assets/Buildings/Common/Water_Temple_1.png'
+    },
+    // Harvestable Resources
+    {
+        name: 'harvesting',
+        displayName: 'Harvesting',
+        type: 'harvest',
+        price: 2,
+        techRequired: 'organisation',
+        asset: './assets/Misc/Rainbowflame.png'
+    },
+    {
+        name: 'animalHunting',
+        displayName: 'Hunting',
+        type: 'harvest',
+        price: 2,
+        techRequired: 'hunting',
+        asset: './assets/Misc/Rainbowflame.png'
+    },
+    {
+        name: 'fishHunting',
+        displayName: 'Hunt Fish',
+        type: 'harvest',
+        price: 2,
+        techRequired: 'fishing',
+        asset: './assets/Misc/Rainbowflame.png'
+    },
+    {
+        name: 'whaleHunting',
+        displayName: 'Hunt Whale',
+        type: 'harvest',
+        price: 0,
+        techRequired: 'whaling',
+        asset: './assets/Misc/Rainbowflame.png'
+    },
+    {
+        name: 'clearForest',
+        displayName: 'Clear Forest',
+        type: 'harvest',
+        price: 0,
+        techRequired: 'forestry',
+        asset: ''
+    },
+    {
+        name: 'burnForest',
+        displayName: 'Burn Forest',
+        type: 'harvest',
+        price: 2,
+        techRequired: 'chivalry',
+        asset: ''
+    },
+    {
+        name: 'destroy',
+        displayName: 'Destroy',
+        type: 'harvest',
+        price: 0,
+        techRequired: 'construction',
+        asset: ''
+    }
+];
 
-// Techs
+// Centroid
+class Centroid {
+    constructor(x, y, tribe) {
+        this.x = x;
+        this.y = y;
+        this.tribe = tribe;
+    }
+}

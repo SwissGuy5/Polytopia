@@ -36,6 +36,8 @@ class Game {
         this.grid = [];
         this.zoomLevel = 1;
         this.turn = -1;
+        this.unitSelected =  null;
+        this.tileSelected = null;
         
         switch (mapSize) {
             case 'tiny':
@@ -67,11 +69,28 @@ class Game {
         }
     }
 
+    get currentTurnTribe() {
+        return this.tribes[this.turn % this.tribes.length];
+    }
+
+    getSurroundingTiles(tile) {
+        let surroundingTiles = [];
+        for (let y = -1; y < 2; y++) {
+            for (let x = -1; x < 2; x++) {
+                if (!(x == 0 && y == 0) && (tile.y + y >= 0 && tile.x + x >= 0 && tile.y + y <= this.gridSize - 1 && tile.x + x <= this.gridSize - 1)) {
+                    surroundingTiles.push(this.grid[tile.y + y][tile.x + x]);
+                }
+            }
+        }
+        return surroundingTiles;
+    }
+
     initialiseGame() {
         this.setupGrid(); // Create Terrain & Biomes
-        this.displayGrid(); // Display Grid
+        this.generateGrid(); // Display Grid
+        this.generateActions(); // Add actions to the actions bar
+        this.nextTurn(); // Start the turn and update clouds
         this.eventListeners(); //Listen for inputs
-        this.nextTurn();
         this.display(1); // Display the main board
     }
 
@@ -93,40 +112,9 @@ class Game {
             case 'water world':
                 this.generateTerrain(1, 10, 7);
                 break;
-            case 'simplexNoise':
-                for (let x = 0; x < this.gridSize; x++) {
-                    for (let y = 0; y < this.gridSize; y++) {
-                        let i = x * this.gridSize + y;
-                        const terrainLevel = this.normalise(simplexNoise.noise((x)/10, (y)/10, 0)) * 10;
-                        if (terrainLevel < 1) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#ffffff')]);
-                        } else if (terrainLevel < 2) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#cccccc')]);
-                        } else if (terrainLevel < 3) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#a8a8a8')]);
-                        } else if (terrainLevel < 4) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#8c8c8c')]);
-                        } else if (terrainLevel < 5) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#6e6e6e')]);
-                        } else if (terrainLevel < 6) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#6e6e6e')]);
-                        } else if (terrainLevel < 7) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#525252')]);
-                        } else if (terrainLevel < 8) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#383838')]);
-                        } else if (terrainLevel < 9) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#212121')]);
-                        } else if (terrainLevel < 10) {
-                            this.grid.push([new simplexNoiseMapObject([x, y], 'neutral', '#000000')]);
-                        }
-                    }
-                }
-                break;
         }
         this.generateVillages();
-        // this.generateBiomes();
         this.generateResources();
-        // console.log(this.grid);
     }
 
     /**
@@ -141,46 +129,26 @@ class Game {
             for (let x = 0; x < this.gridSize; x++) {
                 const terrainLevel = this.normalise(simplexNoise.noise((x + 100)/divider, (y + 100)/divider, 0)) * multiplier;
                 if (terrainLevel < waterTerrainLevel) {
-                    // this.grid.push([new Ocean([x, y], 'neutral')]);
-                    this.grid[y].push(new Tile(x, y, 'ocean', null, false, 'Default'));
+                    this.grid[y].push(new Tile(x, y, 'ocean'));
                 } else {
-                    this.grid[y].push(new Tile(x, y, 'field', null, false, 'Default'));
-                    // if (x > 0 && x < this.gridSize - 1 && y > 0 && y < this.gridSize - 1) {
-                        // this.grid.push([new Field([x, y], 'neutral', true, true)]);
-                        // this.grid[y].push(new Tile(x, y, 'field', null, null, false, 'neutral'));
-                    // } else {
-                        // this.grid.push([new Field([x, y], 'neutral', false, true)]);
-                    // }
+                    this.grid[y].push(new Tile(x, y, 'field'));
                 }
             }
         }
 
         // Change ocean tiles near land to shallow water tiles
-        // for (let object of this.grid) {
         this.getTiles(this.grid).forEach(tile => {
             if (tile.terrain == 'ocean') {
                 let x = tile.x;
                 let y = tile.y;
-                // console.log(this.grid[y * this.gridSize + x + 1]);
-                // console.log(this.grid[y][x]);
                 if (x + 1 <= this.gridSize - 1 && this.grid[y][x + 1].terrain == 'field') {
                     tile.terrain = 'water';
-                    // object.unshift(new Water([x, y], 'neutral'));
-                    // object.pop();
                 } else if (x - 1 >= 0 && this.grid[y][x - 1].terrain == 'field') {
                     tile.terrain = 'water';
-                    // object.unshift(new Water([x, y], 'neutral'));
-                    // object.pop();
                 } else if (y + 1 <= this.gridSize - 1 && this.grid[y + 1][x].terrain == 'field') {
                     tile.terrain = 'water';
-                    // object.unshift(new Water([x, y], 'neutral'));
-                    // object.pop();
-                    // console.log(object);
                 } else if (y - 1 >= 0 && this.grid[y - 1][x].terrain == 'field') {
                     tile.terrain = 'water';
-                    // object.unshift(new Water([x, y], 'neutral'));
-                    // object.pop();
-                    // console.log(object);
                 }
             }
         });
@@ -207,20 +175,6 @@ class Game {
                 this.grid[newVillageCoordinate.y][newVillageCoordinate.x].city = city;
                 villagesArray.push(city);
 
-                // Add borders
-                // for (let y = -1; y < 2; y++) {
-                //     for (let x = -1; x < 2; x++) {
-                //         // Add borders to capitals only -> change resource generation based on borders for villages,
-                //         // resources should be generated around them too.
-                //         // if (city.type == 'capital') {
-                //         //     let tile = this.grid[newVillageCoordinate.y + y][newVillageCoordinate.x + x];
-                //         //     tile.border = city;
-                //         //     tile.biome = city.tribe.name;
-                //         //     city.tiles.push(tile);
-                //         // }
-                //     }
-                // }
-
                 // Remove tiles in a 5x5 radius from the suitable places array
                 for (let y = -2; y < 3; y++) {
                     for (let x = -2; x < 3; x++) {
@@ -241,74 +195,115 @@ class Game {
             }
         }
         
-        // Assign a village to each tribe
-        let tempIndex = Math.floor(Math.random() * villagesArray.length)
-        capitalsArray.push(villagesArray[tempIndex]);
-        villagesArray.splice(tempIndex, 1)
-
-        for (let i = 0; i < this.tribes.length - 1; i++) {
-            tempIndex = this.findFurthestPoint(capitalsArray, villagesArray);
-            capitalsArray.push(villagesArray[tempIndex]);
-            villagesArray.splice(tempIndex, 1)
+        let centroids = [];
+        for (let i = 0; i < this.tribes.length; i++) {
+            centroids.push(new Centroid(villagesArray[i].x, villagesArray[i].y, this.tribes[i]));
+        }
+        for (let i = 0; i < 30; i++) {
+            this.converge(villagesArray, centroids);
         }
 
-        for (let [key, capital] of Object.entries(capitalsArray)) {
-            this.grid[capital.y][capital.x].terrainResource = 'city';
-            capital.type = 'capital';
-            capital.tribe = this.tribes[key];
+        for (let tile of this.getTiles(this.grid)) {
+            let nearestCentroid = Infinity;
+            centroids.forEach(centroid => {
+                let dist = this.distance(centroid.x, centroid.y, tile.x, tile.y);
+                if (dist <= nearestCentroid) {
+                    nearestCentroid = dist;
+                    // Generate Biomes
+                    tile.biome = centroid.tribe.name;
+                }
+            })
+        }
 
-            // Add borders
+        // Add capitals
+        centroids.forEach(centroid => {
+            let nearestVillageDist = Infinity;
+            let nearestVillage;
+            villagesArray.forEach(village => {
+                let dist = this.distance(centroid.x, centroid.y, village.x, village.y);
+                if (dist <= nearestVillageDist) {
+                    nearestVillageDist = dist;
+                    nearestVillage = village;
+                }
+            })
+            nearestVillage.type = 'capital';
+            this.grid[nearestVillage.y][nearestVillage.x].terrainResource = 'city';
+            nearestVillage.tribe = nearestVillage.centroid.tribe;
+            nearestVillage.tribe.cities.push(nearestVillage);
             for (let y = -1; y < 2; y++) {
                 for (let x = -1; x < 2; x++) {
-                    // Add borders to capitals only -> change resource generation based on borders for villages,
-                    // resources should be generated around them too.
-                    let tile = this.grid[capital.y + y][capital.x + x];
-                    tile.border = capital;
-                    tile.biome = capital.tribe.name;
-                    capital.tiles.push(tile);
+                    let tile = this.grid[nearestVillage.y + y][nearestVillage.x + x];
+                    tile.border = nearestVillage;
+                    tile.biome = nearestVillage.centroid.tribe.name;
+                    nearestVillage.tiles.push(tile);
                 }
             }
-        }
-        console.log(villagesArray, capitalsArray);
-        // for (let [key, village] of Object.entries(villagesArray)) {
-
-        // }
+            for (let y = -2; y < 3; y++) {
+                for (let x = -2; x < 3; x++) {
+                    if (nearestVillage.y + y >= 0 && nearestVillage.x + x >= 0 && nearestVillage.y + y <= this.gridSize - 1 && nearestVillage.x + x <= this.gridSize - 1) {
+                        let tile = this.grid[nearestVillage.y + y][nearestVillage.x + x];
+                        tile.exploredBy.push(nearestVillage.tribe.name);
+                    }
+                }
+            }
+        })
     }
 
-    findFurthestPoint(capitalsArray, villagesArray) {
-        let furthestPointIndex = null;
-        let maxAverageDistance = -1;
-        let minAverageDistance = Infinity;
-        for (let [key, village] of Object.entries(villagesArray)) {
-            let averageDistance = -1;
-            // Add distance between village and capitals to the average distance
-            for (let capital of capitalsArray) {
-                averageDistance += Math.hypot(village.x - capital.x, village.y - capital.y);
-            }
-            // Divide by num of capitals to find average
-            averageDistance /= capitalsArray.length;
-            // Check if this village's average is greater than the previous maxAverage
-            if (capitalsArray.length <= 4) {
-                if (averageDistance > maxAverageDistance) {
-                    maxAverageDistance = averageDistance;
-                    furthestPointIndex = key;
+    converge(villagesArray, centroids) {
+        // Assign each Point to a Centroid
+        villagesArray.forEach(village => {
+            let nearestCentroid = Infinity;
+            centroids.forEach(centroid => {
+                let dist = this.distance(centroid.x, centroid.y, village.x, village.y);
+                if (dist <= nearestCentroid) {
+                    village.centroid = centroid;
+                    nearestCentroid = dist;
                 }
+            })
+        })
+
+        // Update average Centroid position
+        centroids.forEach(centroid => {
+            let listOfVillages = [];
+            let xAverage = 0;
+            let yAverage = 0;
+            let nearestVillageDist = Infinity;
+            let nearestVillage;
+            villagesArray.forEach(village => {
+                if (village.centroid.tribe.name == centroid.tribe.name) {
+                    listOfVillages.push(village);
+                    xAverage += village.x;
+                    yAverage += village.y;
+                    let dist = this.distance(centroid.x, centroid.y, village.x, village.y);
+                    if (dist <= nearestVillageDist) {
+                        nearestVillageDist = dist;
+                        nearestVillage = village;
+                    }
+                }
+            })
+            if (listOfVillages.length != 0) {
+                xAverage /= listOfVillages.length;
+                yAverage /= listOfVillages.length;
+                centroid.x = xAverage;
+                centroid.y = yAverage;
             } else {
-                // Slightly better on average but can produce funkier terrain, find a better way to implement these
-                if (averageDistance < minAverageDistance) {
-                    minAverageDistance = averageDistance;
-                    furthestPointIndex = key;
+                // If no villages near Centroid, randomly replace the centroid
+                let bool = true;
+                while (bool) {
+                    let randNumX = randInt(this.gridSize);
+                    let randNumY = randInt(this.gridSize);
+                    for (let i = 0; i < centroids.length; i++) {
+                        if (centroids[i].x != randNumX && centroids[i].y != randNumY) {
+                            if (i == centroids.length - 1) {
+                                centroid.x = randNumX;
+                                centroid.y = randNumY;
+                                bool = false;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
                 }
-            }
-        }
-        console.log(maxAverageDistance, furthestPointIndex);
-        return furthestPointIndex;
-    }
-
-    generateBiomes() {
-        this.getTiles(this.grid).forEach(tile => {
-            if (tile.border) {
-                console.log(tile.border);
             }
         })
     }
@@ -340,8 +335,8 @@ class Game {
                         tile.resource = null;
                     }
                 }
-                // tile.biome = tile.border.tribe.name;
-            } else if (tile.city == null) {
+            }
+            else if (tile.city == null) {
                 if (tile.terrain == 'water') {
                     randNum <= Tribe.outerMultipliers['fish'] ? tile.resource = 'fish' : tile.resource = null;
                 } else if (tile.terrain == 'ocean') {
@@ -365,23 +360,16 @@ class Game {
                         tile.resource = null;
                     }
                 }
-            } else if(tile.city.type == 'capital') {
-                // tile.biome = tile.city.tribe.name;
             }
         }
     }
 
-    // Grid container
-    displayGrid() {
+    // Create grid container
+    generateGrid() {
         const gridContainer = document.createElement('div');
-        gridContainer.id = 'gridContainer';
-        // let numberOfColumns = '';
-        // for (let i = 0; i < this.gridSize; i++) {
-        //     numberOfColumns += 'auto ';
-        // }
+        gridContainer.id = 'gridContainer'
         gridContainer.style.gridTemplateRows = `repeat(${this.gridSize}, 1fr)`;
         gridContainer.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
-        // gridContainer.style.gridTemplateColumns = numberOfColumns;
         gridContainer.style.height = `${this.tileSize * this.gridSize}px`;
         gridContainer.style.width = `${this.tileSize * this.gridSize}px`;
         document.body.appendChild(gridContainer);
@@ -396,111 +384,353 @@ class Game {
         this.generateGridItems();
     }
 
-    // Grid items
+    // Create and display grid items
     generateGridItems() {
         const gridContainer = document.getElementById('gridContainer');
         for (let tile of this.getTiles(this.grid)) {
-            // console.log(tile.terrainAsset);
             const gridItem = document.createElement('div');
-            gridItem.className = 'grid-items';
+            gridItem.className = 'grid-item';
             gridContainer.appendChild(gridItem);
 
             // Terrain Tile (Land / Water)
             const terrain = document.createElement('div');
-            terrain.className = `terrain${tile.terrainAsset.includes('Water') ? ' water' : ''}${tile.terrainAsset.includes('Ground') ? ' land' : ''}`;
-            terrain.style.backgroundImage = `url(${tile.terrainAsset})`;
+            terrain.className = 'tile terrain';
             gridItem.appendChild(terrain);
 
-            // Terrain Resource (Mountain / Trees / City / Village)
+            // Terrain Resource Tile (Mountain / Trees / City / Village)
             const terrainResource = document.createElement('div');
-            terrainResource.className = `terrain${tile.terrainResourceAsset.includes('Mountains') ? ' mountain' : ''}${tile.terrainResourceAsset.includes('Forests') ? ' forest' : ''}${tile.terrainResourceAsset.includes('Houses') ? ' city' : ''}${tile.terrainResourceAsset.includes('Village') ? ' village' : ''}`;
-            terrainResource.style.backgroundImage = `url(${tile.terrainResourceAsset})`;
+            terrainResource.className = 'tile terrainResource';
             gridItem.appendChild(terrainResource);
+
+            // City Caption
+            if (tile.terrainResource == 'city') {
+                // Create a tag displaying the city's name and star income per turn
+            }
 
             // Resource Tile (Fruit / Crop / Animal / Metal / Fish / Whale)
             const resource = document.createElement('div');
-            // resource.className = 'animal';
-            resource.className = `terrain${tile.resourceAsset.includes('Fruit') ? ' fruit' : ''}${tile.resourceAsset.includes('Crop') ? ' crop' : ''}${tile.resourceAsset.includes('Animal') ? ' animal' : ''}${tile.resourceAsset.includes('Metal') ? ' metal' : ''}${tile.resourceAsset.includes('Fish') ? ' fish' : ''}${tile.resourceAsset.includes('Whale') ? ' whale' : ''}`;
-            let img = document.createElement('img');
-            img.src = tile.resourceAsset;
-            // img.src = './assets/Resources/Animals/Animal_1.png';
-            img.onload = function () {
-                if (tile.resource != 'metal') {
-                    resource.style.backgroundSize = `${(img.naturalHeight < img.naturalWidth ? (img.naturalHeight/img.naturalWidth) : (img.naturalWidth/img.naturalHeight))*100}% 100%`;
-                }
-                resource.style.backgroundImage = `url(${tile.resourceAsset})`;
-                // resource.style.backgroundImage = `url('./assets/Resources/Animals/Animal_1.png')`;
-                // console.log(img.naturalWidth, img.naturalHeight);
-                img.remove();
-            }
+            resource.className = 'tile resource';
             gridItem.appendChild(resource);
 
-            // Experiment
-            // const exp = document.createElement('img');
-            // exp.className = `exp`;
-            // exp.style.backgroundImage = `url(./assets/Resources/Animals/Animal_AiMo.png)`;
-            // gridItem.appendChild(exp);
+            // Building TIle
+            const building = document.createElement('div');
+            building.className = `tile building hidden`;
+            gridItem.appendChild(building);
 
-            // Display Resources
-            // const gridItemResource = document.createElement('div');
-            // // gridItemResource.classList.add('circle');
-            // gridItemResource.className = 'circle';
-            // gridItemResource.backgroundColor = tile.resourceColor;
-            // gridItemResource.style.width = `${this.tileSize - 20}px`;
-            // gridItemResource.style.height = `${this.tileSize - 20}px`;
-            // gridItem.appendChild(gridItemResource);
-            
+            // Cloud Tile
+            const cloud = document.createElement('div');
+            cloud.className = `tile cloud`;
+            cloud.style.backgroundImage = `url(${tile.cloudAsset})`;
+            gridItem.appendChild(cloud);
+
+            // === Display Units === //
+
             // Inner Text Div
-            // const gridItemText = document.createElement('div');
-            // gridItemText.innerText = `(${tile.x}, ${tile.y})`;
-            // gridItemText.style.width = `${this.tileSize - 2}px`;
-            // gridItemText.style.height = `${this.tileSize - 2}px`;
-            // gridItem.appendChild(gridItemText);
+            const gridItemText = document.createElement('div');
+            gridItemText.className = 'tile text';
+            gridItemText.innerText = `(${tile.x}, ${tile.y})`;
+            gridItemText.style.width = `${this.tileSize - 2}px`;
+            gridItemText.style.height = `${this.tileSize - 2}px`;
+            gridItem.appendChild(gridItemText);
         }
-        // for (let i = 0; i < this.grid.length; i++) {
-        //     // Main Grid Item Div
-        //     let object = this.grid[i].at(-1);
-        //     const gridItem = document.createElement('div');
-        //     gridItem.className = 'grid-items';
-        //     if (object.getClassName() == 'VillageBorder') {
-        //         gridItem.style.outline = `3px solid ${object.getColor()}`;
-        //         gridItem.style.zIndex = 2;
-        //         gridItem.style.backgroundColor = this.grid[i].at(-2).getColor();
-        //     } else {
-        //         gridItem.style.backgroundColor = object.getColor();
-        //     }
-        //     // gridItem.style.backgroundImage = `url(./assets/terrain/fuji0006.png)`;
-        //     gridContainer.appendChild(gridItem);
+    }
 
-        //     // const gridImage = document.createElement('img');
-        //     // gridImage.src = './assets/terrain/fuji0006.png';
-        //     // gridImage.width = gridItem.width;
-        //     // gridImage.height = gridItem.height;
-        //     // gridItem.appendChild(gridImage);
+    // Update the grid to show / hide clouds
+    updateGridItems() {
+        // const gridContainer = document.getElementById('gridContainer');
+        [...document.getElementsByClassName('grid-item')].forEach((gridItem, i) => {
+            let tile = this.getTiles(this.grid)[i];
+
+            // Update the assets of each tile
+            const terrain = gridItem.querySelector('.terrain');
+            terrain.className = `tile terrain${tile.terrainAsset.includes('Water') ? ' water' : ''}${tile.terrainAsset.includes('Ground') ? ' land' : ''}`;
+            terrain.style.backgroundImage = `url(${tile.terrainAsset})`;
+
+            const terrainResource = gridItem.querySelector('.terrainResource');
+            terrainResource.className = `tile terrainResource${tile.terrainResourceAsset.includes('Mountains') ? ' mountain' : ''}${tile.terrainResourceAsset.includes('Forests') ? ' forest' : ''}${tile.terrainResourceAsset.includes('Houses') ? ' city' : ''}${tile.terrainResourceAsset.includes('Village') ? ' village' : ''}`;
+            terrainResource.style.backgroundImage = `url(${tile.terrainResourceAsset})`;
+
+            const resource = gridItem.querySelector('.resource');
+            resource.className = `tile resource${tile.resourceAsset.includes('Fruit') ? ' fruit' : ''}${tile.resourceAsset.includes('Crop') ? ' crop' : ''}${tile.resourceAsset.includes('Animal') ? ' animal' : ''}${tile.resourceAsset.includes('Metal') ? ' metal' : ''}${tile.resourceAsset.includes('Fish') ? ' fish' : ''}${tile.resourceAsset.includes('Whale') ? ' whale' : ''}`;
+            resource.style.backgroundImage = `url(${tile.resourceAsset})`;
+
+            const building = gridItem.querySelector('.building');
+            building.className = `tile building`;
+            building.style.backgroundImage = `url(${tile.buildingAsset})`
+
+            const cloud = gridItem.querySelector('.cloud')
+            cloud.className = `tile cloud${tile.exploredBy.includes(this.currentTurnTribe.name) ? ' hidden' : ''}`;
+
+            // Hide all tiles under a cloud
+            [...gridItem.querySelectorAll('.tile')].forEach(terrainElement => {
+                // Explored by current tribe -> Show terrain
+                if (terrainElement != cloud) {
+                    if (tile.exploredBy.includes(this.currentTurnTribe.name)) {
+                        terrainElement.classList.contains('hidden') ? terrainElement.classList.remove('hidden') : null;
+                    } else { // Not explored by current tribe -> Hide terrain under clouds
+                        terrainElement.classList.contains('hidden') ? null : terrainElement.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    }
+
+    // Adds each exisitng buildings to the actions bar
+    generateActions() {
+        // Building Actions
+        for (let action of barActions) {
+            const actionsBar = document.getElementById('actionsBar');
+            let span = document.createElement('span');
+            span.id = action.name;
+            let btn = document.createElement('button');
+            btn.onclick = () => { this.handleActions(action); }
+            btn.innerText = action.price;
+            let text = document.createElement('p');
+            text.innerText = action.displayName;
+            span.appendChild(btn);
+            span.appendChild(text);
+            actionsBar.appendChild(span);
+        }
+    }
+
+    // Hide all unavailable / unaplicable actions
+    updateActions(tile) {
+        // Building Action Updates
+        const actionsBarSpan = document.querySelectorAll('#actionsBar span');
+
+        // Hide all actions
+        actionsBarSpan.forEach((action) => {
+            action.classList.contains('hidden') ? null : action.classList.add('hidden');
+        });
+
+        // Check if tile is a city
+        if (tile.terrainResource == 'city') {
+
+        // Check if tile is within a city's border
+        } else if (tile.border != null && (tile.border.type == 'capital' || tile.border.type == 'city') && tile.border.tribe == this.tribes[this.turn % this.tribes.length]) {
+            // --- Harvestable Resources --- //
+            if (tile.resource == 'fruit') { // Harvest Fruit
+                this.updateActionDisplay(document.getElementById('harvesting'));
+            } else if (tile.resource == 'animal') { // Hunt Animal
+                this.updateActionDisplay(document.getElementById('animalHunting'));
+            } else if (tile.resource == 'fish') { // Hunt Fish
+                this.updateActionDisplay(document.getElementById('fishHunting'));
+            } else if (tile.resource == 'whale') { // Hunt Whale
+                this.updateActionDisplay(document.getElementById('whaleHunting'));
+            } else if (tile.building != null) { // Hunt Whale
+                this.updateActionDisplay(document.getElementById('destroy'));
+            }
+
+            if (tile.terrain == 'field') {
+                // --- Tile Upgrades --- //
+                if (tile.resource == 'crop') {
+                    this.updateActionDisplay(document.getElementById('farm'));
+                }
+                if (tile.resource == 'metal') {
+                    this.updateActionDisplay(document.getElementById('mine'));
+                }
+                if (tile.terrainResource == 'mountain') {
+                    this.updateActionDisplay(document.getElementById('mountainTemple'));
+                } else if (tile.terrainResource == 'forest') {
+                    this.updateActionDisplay(document.getElementById('lumberHut'));
+                    this.updateActionDisplay(document.getElementById('forestTemple'));
+                    this.updateActionDisplay(document.getElementById('clearForest'));
+                    this.updateActionDisplay(document.getElementById('burnForest'));
+                } else {
+                    // Non-obstructed field
+                    this.updateActionDisplay(document.getElementById('temple'));
+                    this.updateActionDisplay(document.getElementById('growForest'));
+
+                    // --- Hubs --- //
+                    let numOfBuildings;
+                    let existingHub;
+                    // Customs House
+                    existingHub = false;
+                    this.tileSelected.border.tiles.forEach(borderingTile => {
+                        if (borderingTile.building == 'customsHouse') {
+                            existingHub = true;
+                        }
+                    });
+                    if (existingHub == false ) {
+                        numOfBuildings = false;
+                        this.getSurroundingTiles(tile).forEach(newTile => {
+                            if (newTile.building == 'port') {
+                                numOfBuildings++;
+                            }
+                        })
+                        if (numOfBuildings > 0) {
+                            this.updateActionDisplay(document.getElementById('customsHouse'));
+                        }
+                    }
+
+                    // Forge
+                    existingHub = false;
+                    this.tileSelected.border.tiles.forEach(borderingTile => {
+                        if (borderingTile.building == 'forge') {
+                            existingHub = true;
+                        }
+                    });
+                    if (existingHub == false ) {
+                        numOfBuildings = 0;
+                        this.getSurroundingTiles(tile).forEach(newTile => {
+                            if (newTile.building == 'mine') {
+                                numOfBuildings++;
+                            }
+                        })
+                        if (numOfBuildings > 0) {
+                            this.updateActionDisplay(document.getElementById('forge'));
+                        }
+                    }
+
+                    // Sawmill
+                    existingHub = false;
+                    this.tileSelected.border.tiles.forEach(borderingTile => {
+                        if (borderingTile.building == 'sawmill') {
+                            existingHub = true;
+                        }
+                    });
+                    if (existingHub == false ) {
+                        numOfBuildings = 0;
+                        this.getSurroundingTiles(tile).forEach(newTile => {
+                            if (newTile.building == 'lumberHut') {
+                                numOfBuildings++;
+                            }
+                        })
+                        if (numOfBuildings > 0) {
+                            this.updateActionDisplay(document.getElementById('sawmill'));
+                        }
+                    }
+
+                    // Windmill
+                    existingHub = false;
+                    this.tileSelected.border.tiles.forEach(borderingTile => {
+                        if (borderingTile.building == 'windmill') {
+                            existingHub = true;
+                        }
+                    });
+                    if (existingHub == false ) {
+                        numOfBuildings = 0;
+                        this.getSurroundingTiles(tile).forEach(newTile => {
+                            if (newTile.building == 'farm') {
+                                numOfBuildings++;
+                            }
+                        })
+                        if (numOfBuildings > 0) {
+                            this.updateActionDisplay(document.getElementById('windmill'));
+                        }
+                    }
+                }
+            } else if (tile.terrain == 'water') {
+                // Port
+                this.updateActionDisplay(document.getElementById('port'));
+
+                // Water Temple
+                this.updateActionDisplay(document.getElementById('waterTemple'));
+            } else if (tile.terrain == 'ocean') {
+                // Water Temple
+                this.updateActionDisplay(document.getElementById('waterTemple'));
+            }
+        }
+    }
+
+    updateActionDisplay(action) {
+        let actionTechUnlocked = false;
+        let actionAffordable = false;
+        this.currentTurnTribe.techs.forEach(tech => {
+            barActions.forEach(barAction => {
+                if (barAction.name == action.id && barAction.techRequired == tech.name && tech.unlocked) {
+                    actionTechUnlocked = true;
+                    if (this.currentTurnTribe.balance >= barAction.price) {
+                        actionAffordable = true;
+                    }
+                }
+            });
+        });
+
+        if (actionTechUnlocked) {
+            action.classList.contains('hidden') ? action.classList.remove('hidden') : null;
+            action.querySelector('button').style.backgroundColor = 'rgb(16, 141, 236)';
+            if (actionAffordable) {
+                action.querySelector('button').style.borderColor = 'white';
+            } else {
+                action.querySelector('button').style.borderColor = 'red';
+            }
+        } else {
+            action.querySelector('button').style.backgroundColor = 'black';
+            action.querySelector('button').style.borderColor = 'grey';
+        }
+    }
+
+    handleActions(action) {
+        let techUnlocked = false;
+        this.currentTurnTribe.techs.forEach(tech => {
+            if (action.techRequired == tech.name && tech.unlocked) {
+                techUnlocked = true;
+            }
+        });
+        let city = this.tileSelected.border;
+        if (this.currentTurnTribe.balance >= action.price && techUnlocked && city) {
+            this.currentTurnTribe.balance -= action.price;
             
-        //     // Inner Text Div
-        //     const gridItemText = document.createElement('div');
-        //     gridItemText.innerText = `(${object.getPosX()}, ${object.getPosY()})`;
-        //     gridItemText.style.width = `${this.tileSize - 2}px`;
-        //     gridItemText.style.height = `${this.tileSize - 2}px`;
-        //     gridItem.appendChild(gridItemText);
-        // }
-
-        // for (let x = this.gridSize; x > 0; x--) {
-        //     for (let y = this.gridSize; y > 0; y--) {
-        //         const gridItem = document.createElement('div');
-        //         gridItem.className = 'grid-items';
-        //         document.getElementById('gridContainer').appendChild(gridItem);
-        
-        //         // const gridImage = document.createElement('img');
-        //         // gridImage.src = './assests/terrain/fuji0006.png';
-        //         // // gridImage.width = `${this.tileSize - 2}px`;
-        //         // // gridImage.height = `${this.tileSize - 2}px`;
-        //         // gridImage.width = '50px';
-        //         // gridImage.height = '50px';
-        //         // gridItem.appendChild(gridImage);
-        //     }
-        // }
+            // Get the tile HTML from a tile object
+            let tileSelectedHTML;
+            this.getTiles(this.grid).forEach((tile, i) => {
+                if (tile == this.tileSelected) {
+                    tileSelectedHTML = [...document.getElementsByClassName('grid-item')][i]
+                }
+            })
+            // Upadate HTML based on the action type
+            if (action.type == 'resource' || action.type == 'hub' || action.type == 'temple') {
+                this.tileSelected.building = action.name;
+                this.tileSelected.resource = null;
+                if (action.name == 'growForest') {
+                    this.tileSelected.terrainResource = 'forest';
+                } else if (action.type == 'hub') {
+                    city.population += city.getHubPopulation(action.name, this.tileSelected);
+                } else if (action.type == 'temple') {
+                    city.population++;
+                } else if (action.type == 'resource') {
+                    if (action.name == 'port' || action.name == 'farm' || action.name == 'mine') {
+                        city.population += 2;
+                    } else {
+                        city.population++;
+                    }
+                    this.getSurroundingTiles(this.tileSelected).forEach(nearbyTile => {
+                        if ((nearbyTile.building == 'customsHouse' && this.tileSelected.building == 'port') || (nearbyTile.building == 'windmill' && this.tileSelected.building == 'farm') || (nearbyTile.building == 'forge' && this.tileSelected.building == 'mine') || (nearbyTile.building == 'sawmill' && this.tileSelected.building == 'lumberHut')) {
+                            city.population += 1; // If a hub is near, add 1 extra citizen
+                        }
+                    })
+                }
+            } else if (action.type == 'harvest') {
+                if (action.name == 'clearForest') {
+                    this.tileSelected.terrainResource = null;
+                    city.tribe.balance += 1;
+                } else if (action.name == 'burnForest') {
+                    this.tileSelected.terrainResource = null;
+                    this.tileSelected.resource = 'crop';
+                } else if (action.name == 'whaleHunting') {
+                    this.tileSelected.resource = null;
+                    city.tribe.balance += 10;
+                } else if (action.name == 'destroy') {
+                    if (this.tileSelected.building == 'customsHouse' || this.tileSelected.building == 'windmill' || this.tileSelected.building == 'forge' || this.tileSelected.building == 'sawmill') {
+                        city.population -= city.getHubPopulation(this.tileSelected.building, this.tileSelected);
+                    } else {
+                        this.getSurroundingTiles(this.tileSelected).forEach(nearbyTile => {
+                            if ((nearbyTile.building == 'customsHouse' && this.tileSelected.building == 'port') || (nearbyTile.building == 'windmill' && this.tileSelected.building == 'farm') || (nearbyTile.building == 'forge' && this.tileSelected.building == 'mine') || (nearbyTile.building == 'sawmill' && this.tileSelected.building == 'lumberHut')) {
+                                city.population -= 1; // If a hub is near, remove 1 from the hub, remove the rest later
+                            }
+                        })
+                        this.tileSelected.building == 'port' || this.tileSelected.building == 'farm' || this.tileSelected.building == 'mine' ? city.population -= 2 : city.population -= 1;
+                    }
+                    // === Add a check for hubs === ///
+                    this.tileSelected.building = null;
+                } else {
+                    city.population++;
+                    this.tileSelected.resource = null;
+                }
+            }
+            this.display(1);
+        }
     }
 
     // Event listeneners
@@ -516,26 +746,37 @@ class Game {
 
         document.addEventListener('keypress', this.keyboardInputs);
 
-        // console.log(document.getElementsByClassName('grid-items')[0]);
-
         // Change the HTMLCollection into an iterable array on which 'foreach' can be used
-        [...document.getElementsByClassName('grid-items')].forEach((gridItem, i) => {
+        [...document.getElementsByClassName('grid-item')].forEach((gridItem, i) => {
             // Detect when tile is clicked
             let startX;
             let startY;
             gridItem.addEventListener('mousedown', function (event) {
-                startX = event.clientX;
-                startY = event.clientY;
+                // if (event.target !== this) {
+                    startX = event.clientX;
+                    startY = event.clientY;
+                // }
             });
             
             gridItem.addEventListener('mouseup', (event) => {
-                const diffX = Math.abs(event.clientX - startX);
-                const diffY = Math.abs(event.clientY - startY);
-                if (diffX < 6 && diffY < 6) {
-                    this.display(2, this.getTiles(this.grid)[i]);
-                }
+                // console.log(event.target, gridItem);
+                // if (event.target !== this) {
+                    const diffX = Math.abs(event.clientX - startX);
+                    const diffY = Math.abs(event.clientY - startY);
+                    if (diffX < 6 && diffY < 6) {
+                        this.tileSelected = this.getTiles(this.grid)[i];
+                        this.display(2, this.getTiles(this.grid)[i]);
+                    }
+                // }
             });
         });
+        [...document.getElementsByTagName('path')].forEach(pathTag => {
+            if (pathTag.outerHTML.includes('url(#techtreev5-fillStyle')) {
+                pathTag.addEventListener('click', (event) => {
+                    console.log(pathTag);
+                });
+            }
+        })
     }
 
     // Keyboard inputs
@@ -569,16 +810,16 @@ class Game {
         }
     }
 
-    play() {
-        console.log(this.turn % this.tribes.length);
-        console.log(this.tribes[this.turn % this.tribes.length]);
-    }
-
     nextTurn() {
         this.turn++;
+        
+        this.updateGridItems();
+        this.currentTurnTribe.balance += this.currentTurnTribe.income;
+
+        document.getElementById('balance').innerText = this.currentTurnTribe.balance;
         document.getElementById('turn').innerText = `${Math.floor(this.turn / this.tribes.length)}/30`;
-        document.getElementById('tribeTurn').innerText = this.tribes[this.turn % this.tribes.length].name;
-        console.log(`Turn: ${this.turn}`);
+        document.getElementById('tribeTurn').innerText = this.currentTurnTribe.name;
+        console.log(`Turn: ${this.turn}, Income: ${this.currentTurnTribe.income}`);
     }
 
     // Dragging the grid around
@@ -613,12 +854,13 @@ class Game {
     display(display, tile) {
         const gridContainer = document.getElementById('gridContainer')
         const bottomBar = document.getElementById('bottomBar');
-        const actionsBar = document.querySelectorAll('#actionsBar span');
+        const actionsBarSpan = document.querySelectorAll('#actionsBar span');
         const menuBar = document.getElementById('menuBar');
         const closeBtn = document.getElementById('closeBtn');
         const techTree = document.getElementById('techTree');
         const zoomBar = document.getElementById('zoomBar');
-        const terrainDetail = document.getElementById('terrainDetail');
+        const terrainDetailName = document.getElementById('terrainDetailName');
+        const terrainDetailImg = document.getElementById('terrainDetailImg');
 
         switch (display) {
             case 0: // Main Menu
@@ -631,23 +873,26 @@ class Game {
                 bottomBar.style.display = 'none';
                 techTree.style.display = 'none';
                 closeBtn.style.display = 'none';
+                this.tileSelected = null;
+                document.getElementById('balance').innerText = this.currentTurnTribe.balance;
+                this.updateGridItems();
                 break;
             case 2: // Tile Info
                 menuBar.style.display = 'none';
                 gridContainer.style.display = 'grid';
                 bottomBar.style.display = 'block';
-                terrainDetail.innerText = this.capitalise(tile.terrain);
-                console.log(tile);
-                // console.log(tile.border.tribe);
-                if (tile.border != null && tile.border.type == 'capital' && tile.border.tribe == this.tribes[this.turn % this.tribes.length]) {
-                    actionsBar.forEach((action) => {
-                        action.style.display = 'block';
-                    });
+                if (tile.resource != null) {
+                    terrainDetailName.innerText = this.capitalise(tile.resource);
+                    terrainDetailImg.src = tile.resourceAsset;
+                } else if (tile.terrainResource != null) {
+                    terrainDetailName.innerText = this.capitalise(tile.terrainResource);
+                    terrainDetailImg.src = tile.terrainResourceAsset;
                 } else {
-                    actionsBar.forEach((action) => {
-                        action.style.display = 'none';
-                    });
+                    terrainDetailName.innerText = this.capitalise(tile.terrain);
+                    terrainDetailImg.src = tile.terrainAsset;
                 }
+                console.log(tile);
+                this.updateActions(tile);
                 break;
             case 3: // Tech Tree
                 techTree.style.display = 'block';
@@ -658,24 +903,6 @@ class Game {
                 techTree.scrollIntoView();
         }
     }
-
-    mainPage() {
-        const bottomBar = document.getElementById('bottomBar');
-        const menuBar = document.getElementById('menuBar');
-        menuBar.style.display = 'block';
-        bottomBar.style.display = 'none';
-    }
-
-    // Make the tribe count fits the map type by adding "default" tribes
-    // fillInTribes(num) {
-    //     if (this.tribes.length < num) {
-    //         for (let i = this.tribes.length; i < num; i++) {
-    //             this.tribes.push('default');
-    //         }
-    //     }
-    //     this.tribes = this.shuffleArray(this.tribes);
-    //     console.log(this.tribes);
-    // }
 
     // Use to map out a range of keys from -1 and 1 to 0 and 1
     normalise(num) {
@@ -690,6 +917,10 @@ class Game {
      */
     randInt(num) {
         return Math.floor(Math.random() * num);
+    }
+
+    distance(Ax, Ay, Bx, By) {
+        return Math.hypot(Bx - Ax, By - Ay);
     }
     
     // Shuffles an array
@@ -721,6 +952,4 @@ class Game {
     }
 }
 
-// const game = new Game('continents', 'normal', 100, ['oumaji', 'polaris', 'bardur', 'imperius']);
-// const game = new Game('continents', 'normal', 100, [new XinXi(), new Imperius(), new Bardur(), new Oumaji()]);
-const game = new Game('continents', 'large', 100, [new Tribe('AiMo'), new Tribe('Vengir'), new Tribe('Bardur'), new Tribe('Oumaji'), new Tribe('Polaris'), new Tribe('Quetzali')]);
+const game = new Game('continents', 'large', 100, [new Tribe('Ancients'), new Tribe('AiMo'), new Tribe('Zebasi'), new Tribe('Oumaji'), new Tribe('Polaris'), new Tribe('Quetzali')]);
