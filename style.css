@@ -145,10 +145,33 @@ p {
 }
 
 .whale {
-    right: -10%;
-    bottom: -10%;
-    width: 140%;
-    height: 140%;
+    right: 10%;
+    bottom: 10%;
+    width: 100%;
+    height: 100%;
+}
+
+/* Other */
+.cityTag {
+    right: 1%;
+    bottom: 23%;
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.505);
+    border-radius: 10%;
+    font-size: 110%;
+    z-index: 100;
+}
+
+.text {
+    right: -50%;
+    bottom: 0%;
+    background-size: 62% 100%;
+    color: red;
+    font-size: 150%;
+}
+
+.hidden {
+    display: none;
 }
 
 .exp {
@@ -160,22 +183,30 @@ p {
     transform: rotate(-45deg);
 }
 
-.text {
-    right: -50%;
-    bottom: 0%;
-    background-size: 62% 100%;
-}
-
-.hidden {
-    display: none;
-}
-
 /* Building Tiles */
 .building {
     right: -10%;
     bottom: -10%;
     width: 140%;
     height: 140%;
+}
+
+/* Unit */
+.unit {
+    right: -50%;
+    bottom: -50%;
+    width: 230%;
+    height: 230%;
+    background-size: 60% 100%;
+}
+
+/* GFX */
+.targetGFX {
+    right: -10%;
+    bottom: -10%;
+    width: 120%;
+    height: 120%;
+    /* background-size: 60% 100%; */
 }
 
 /* Stats Bar */

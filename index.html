@@ -45,6 +45,18 @@
             </span>
         </div>
     </div>
+    <div id="cityUpgradesBar">
+        <div>
+            <span id="cityUpgradeOption1">
+                <button onclick=""></button>
+                <p></p>
+            </span>
+            <span id="cityUpgradeOption2">
+                <button onclick=""></button>
+                <p></p>
+            </span>
+        </div>
+    </div>
     <div id="closeBtn">
         <img src="./assets/Misc/dropdown.png" alt="dropdown" onclick="game.display(1)">
     </div>
@@ -63,9 +75,15 @@
             <!-- Green Fill -->
             <radialGradient id="techtreev5-fillStyle-green" cx="0" cy="0" r="50" spreadMethod="pad"
                 gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
-                <stop id="techtreev5-s-path49-fill-0" offset="0%" stop-color="#cde2f0" />
-                <stop id="techtreev5-s-path49-fill-1" offset="48.416273%" stop-color="#94fa96" />
-                <stop id="techtreev5-s-path49-fill-2" offset="100%" stop-color="#3dc50c" />
+                <stop id="techtreev5-s-path49-fill-0" offset="0%" stop-color="#d4fcd9" />
+                <stop id="techtreev5-s-path49-fill-1" offset="48.416273%" stop-color="#3dd951" />
+                <stop id="techtreev5-s-path49-fill-2" offset="90%" stop-color="#2ad13f" />
+            </radialGradient>
+            <!-- Black Fill -->
+            <radialGradient id="techtreev5-fillStyle-black" cx="0" cy="0" r="50" spreadMethod="pad"
+                gradientUnits="userSpaceOnUse" gradientTransform="translate(50 50)">
+                <stop id="techtreev5-s-path49-fill-0" offset="0%" stop-color="#000000" />
+                <stop id="techtreev5-s-path49-fill-2" offset="100%" stop-color="#000000" />
             </radialGradient>
         </defs>
         <g id="techtreev5-u-nxvf0kieewncrvhhdu4mx" transform="matrix(.16-.99 0.99 0.16 356.53 198.14)">
@@ -89,23 +107,23 @@
                 stroke="#fff" />
         </g>
         <g id="techtreev5-u-izj0att-mtbcsnppqwi4f" transform="matrix(.79 0.62-.62 0.79 273.97 403.18)">
-            <path id="techtreev5-s-path6" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="archery" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-hh7ypbfknpsexbk89awqj" transform="matrix(-.79-.62-.62 0.79 377.63 269.04)">
-            <path id="techtreev5-s-path7" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="forestry" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-qztfmcsmf7y2rhhkdijrs" transform="matrix(-.79-.62-.62 0.79 421.14 407.5)">
-            <path id="techtreev5-s-path8" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="hunting" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-xj7xegchbt0pltkvk-51r" transform="matrix(-.79-.62-.62 0.79 325.39 131.67)">
-            <path id="techtreev5-s-path9" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="mathematics" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-h34aoxruuaai9wiy4mwlm" transform="matrix(.79 0.62-.62 0.79 129.14 399.08)">
-            <path id="techtreev5-s-path10" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="spiritualism" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-5lj95mac3pech_ctpj1x7" transform="matrix(-.87-.48 0.48-.87 160.67 550.98)">
@@ -129,23 +147,23 @@
                 stroke="#fff" />
         </g>
         <g id="techtreev5-u-q78h9tpgjyo8zb4vneb75" transform="matrix(.83-.56 0.56 0.83 330.16 688.56)">
-            <path id="techtreev5-s-path16" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="sailing" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-5gcqnhms2ts-hek8qx177" transform="matrix(-.83 0.56 0.56 0.83 234.92 552.71)">
-            <path id="techtreev5-s-path17" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="whaling" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-cmsl83-xwzqwsmdvfvsd9" transform="matrix(-.83 0.56 0.56 0.83 379.75 549.93)">
-            <path id="techtreev5-s-path18" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="fishing" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-0sxj37g8fgwvu_g3fdkld" transform="matrix(-.83 0.56 0.56 0.83 87.83 555.76)">
-            <path id="techtreev5-s-path19" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="aquatism" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-aa8wl2tbptgihaqnnpucc" transform="matrix(.83-.56 0.56 0.83 281.5 825.04)">
-            <path id="techtreev5-s-path20" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="navigation" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-_rtg__kq0o8gjzonuwte7" transform="matrix(-.67 0.74-.74-.67 452.15 841.63)">
@@ -169,23 +187,23 @@
                 stroke="#fff" />
         </g>
         <g id="techtreev5-u-ekxdrfi8po0qtguh5lwt7" transform="matrix(-.33-.95 0.95-.33 633.06 714.65)">
-            <path id="techtreev5-s-path26" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="mining" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-zj4oc4k3ekgfxvjganhh1" transform="matrix(.33 0.95 0.95-.33 475.33 770.33)">
-            <path id="techtreev5-s-path27" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="meditation" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-waqojzeiqvdvuxrgvioga" transform="matrix(.33 0.95 0.95-.33 511.99 630.86)">
-            <path id="techtreev5-s-path28" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="climbing" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-dhskrkzh8xcm0olxh6yue" transform="matrix(.33 0.95 0.95-.33 442.07 914.35)">
-            <path id="techtreev5-s-path29" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="philosophy" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-oxk3orfa46d9l3zuv4ku7" transform="matrix(-.33-.95 0.95-.33 752.29 796.97)">
-            <path id="techtreev5-s-path30" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="smithery" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-qobfdm2mjviyr4itu-9ca" transform="matrix(.99-.16 0.16 0.99 751.62 272.13)">
@@ -221,23 +239,23 @@
                 stroke="#fff" />
         </g>
         <g id="techtreev5-u-bd1q-5-gf0dwx2sfyxh4d" transform="matrix(-1 0 0-1 740.22 453.8)">
-            <path id="techtreev5-s-path39" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="farming" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-iqqom5uuatbm503j-2k_w" transform="matrix(1 0 0-1 740.55 625.73)">
-            <path id="techtreev5-s-path40" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="strategy" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-l0ikf5wbqfwt1nyuvnkga" transform="matrix(1 0 0-1 621.58 540.99)">
-            <path id="techtreev5-s-path41" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="organisation" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-xgw4m0e2tkz4f-fezfvuc" transform="matrix(1 0 0-1 866.86 699.4)">
-            <path id="techtreev5-s-path42" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="diplomacy" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-mzdxs3qlltqo2dlvlbkfc" transform="matrix(-1 0 0-1 856.87 367.86)">
-            <path id="techtreev5-s-path43" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="construction" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-3fw-bkl1r2ajdbpzxr7zz" transform="matrix(-.74-.67-.67 0.74 511.59 186.88)">
@@ -249,27 +267,27 @@
                 stroke="#fff" />
         </g>
         <g id="techtreev5-u-ktbdjzek37odto7_fwcyn" transform="translate(500 500)">
-            <path id="techtreev5-s-path46" d="M0,38.2L50,0l50,38.2L80.9,100h-61.8Z" transform="translate(-50-50)"
+            <path id="tribeHeadTechDisplay" d="M0,38.2L50,0l50,38.2L80.9,100h-61.8Z" transform="translate(-50-50)"
                 fill="#986a4c" />
         </g>
         <g id="techtreev5-u-caw65di0kipko8fc5m0bl" transform="matrix(-.34 0.94-.94-.34 531.11 256.96)">
-            <path id="techtreev5-s-path47" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="roads" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-wi3jf4-camm681aoyfdjm" transform="matrix(.34-.94-.94-.34 689.84 314.63)">
-            <path id="techtreev5-s-path48" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="freeSpirit" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-upgx83d-rvw-uuropmrti" transform="matrix(.34-.94-.94-.34 572.47 398.28)">
-            <path id="techtreev5-s-path49" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="riding" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-ts6dojqixiyvf8phom5ok" transform="matrix(.34-.94-.94-.34 805.21 221.97)">
-            <path id="techtreev5-s-path50" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="chivalry" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g>
         <g id="techtreev5-u-aco1d4fbhwd3dyamsbg3a" transform="matrix(-.34 0.94-.94-.34 490.26 117.97)">
-            <path id="techtreev5-s-path51" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
+            <path class="techBtn" id="trade" d="M50,0c27.6,0,50,22.4,50,50s-22.4,50-50,50-50-22.4-50-50s22.4-50,50-50Z"
                 transform="translate(-50-50)" fill="url(#techtreev5-fillStyle-blue)" stroke="#fff" stroke-width="2" />
         </g><text id="techtreev5-s-text1" dx="0" dy="0" font-family="&quot;techtreev5:::Roboto&quot;" font-size="14"
             font-weight="400" font-style="italic" transform="translate(285.273583 159.307592)" fill="#fff"
@@ -497,7 +515,6 @@ Navigation
             </tspan>
         </text>
     </svg>
-    <!-- </div> -->
     <div id="menuBar">
         <div>
             <span>

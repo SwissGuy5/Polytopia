@@ -95,6 +95,57 @@ class Tile {
         }
     }
 
+    get unitAsset() {
+        if (this.unit != null) {
+            return this.unit.unitAsset;
+        } else {
+            return '';
+        }
+    }
+
+    traversable(unit) {
+        if (this.exploredBy.includes(game.currentTurnTribe.name)) {
+            if (unit.carrying) {
+                // if (this.terrain == 'ocean' && !game.currentTurnTribe.findTech('navigation').unlocked) {
+                //     return false;
+                // }
+                return true;
+            } else {
+                if (this.terrain == 'water' && this.building == 'port' && game.currentTurnTribe.findTech('sailing').unlocked) {
+                    return true;
+                } else if (this.terrainResource == 'mountain' && game.currentTurnTribe.findTech('climbing').unlocked) {
+                    return true;
+                } else if (this.terrain == 'field' && this.terrainResource != 'mountain') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    gfxAsset(gfx) {
+        switch(gfx) {
+            case 'target':
+                let returnStatement = '';
+                if (game.selectedUnit) {
+                    game.selectedUnit.validMovement.forEach(validTile => {
+                        if (this == validTile) {
+                            returnStatement = './assets/Misc/moveTarget.png';
+                        }
+                    })
+                    if (game.selectedUnit.canAttack) {
+                        game.getSurroundingTiles(game.selectedUnit.tile, game.selectedUnit.range).forEach(borderingTile => {
+                            if (borderingTile == this && borderingTile.unit && borderingTile.unit.tribe != game.selectedUnit.tribe && borderingTile.exploredBy.includes(game.currentTurnTribe.name)) {
+                                returnStatement = './assets/Misc/attackTarget.png';
+                            }
+                        })
+                    }
+                }
+                return returnStatement;
+        }
+    }
+
     get cloudAsset() {
         return `./assets/Terrain/Cloud.png`; 
     }
@@ -118,18 +169,13 @@ class Tech {
     /**
      * Tech Template
      * @param {String} name Name of Tech
-     * @param {String} type
-        - Improvement
-        - Unit
-        - Building
-        - Special (Other)
      * @param {Object} tier Tier of the technology (1 to 3)
      */
     constructor(name, tier) {
         this.name = name;
-        // this.type = type;
         this.tier = tier;
         this.unlocked = false;
+        // this.type = null;
     }
 
     /**
@@ -138,19 +184,7 @@ class Tech {
      * @returns 
      */
     price(numOfCities) {
-        let tierPrice;
-        switch (this.tier) {
-            case 1:
-                tierPrice = 5;
-                break;
-            case 2:
-                tierPrice = 6;
-                break;
-            case 3:
-                tierPrice = 7;
-                break;
-        }
-        return tierPrice * numOfCities + 4
+        return this.tier * numOfCities + 4
     }
 }
 
@@ -182,6 +216,7 @@ class Tribe {
         this.balance = 4;
         this.multipliers = Tribe.innerMultipliers;
         this.techs = [
+            new Tech ('default', 0), // Starting tech all tribes have for any action not requiring a tech
             new Tech ('climbing', 1),
             new Tech ('fishing', 1),
             new Tech ('hunting', 1),
@@ -218,6 +253,16 @@ class Tribe {
             income += city.cityIncome;
         })
         return income;
+    }
+
+    findTech(name) {
+        let returnStatement = null;
+        this.techs.forEach(tech => {
+            if (tech.name == name) {
+                returnStatement = tech;
+            }
+        })
+        return returnStatement;
     }
 
     static innerMultipliers = {
@@ -290,6 +335,10 @@ class Tribe {
                 break;
         };
         this.techs.forEach(tech => {
+            // Unlock the default / starting tech
+            if (tech.name == 'default') {
+                tech.unlocked = true;
+            }
             if (tech.name == startingTech) {
                 tech.unlocked = true;
             }
@@ -391,6 +440,7 @@ class City {
         this.population = 1;
         this.tiles = [];
         this.upgrades = [];
+        this.sieged = false;
         this.centroid = null;
     }
 
@@ -408,7 +458,16 @@ class City {
     }
 
     get cityIncome() {
-        return this.level;
+        let income = this.level;
+        if (this.upgrades.includes('workshop')) {
+            income++;
+        }
+        this.tiles.forEach(tile => {
+            if (tile.building == 'customsHouse') {
+                income += this.getHubPopulation('customsHouse', tile) * 2
+            }
+        })
+        return income;
     }
 
     getHubPopulation(hubName, tile) {
@@ -428,7 +487,7 @@ class City {
                 break;
         }
         let resourceCount = 0;
-        game.getSurroundingTiles(tile).forEach(borderingTile => {
+        game.getSurroundingTiles(tile, 1).forEach(borderingTile => {
             if (borderingTile.building == buildingToFind) {
                 resourceCount++;
             }
@@ -445,17 +504,234 @@ class Unit {
      * @param {*} name Name of the unit, lower case
      * @param {*} citySupport The city this unit is affiliated to
      */
-    constructor(name, health, damage, defence, movement, range, skills, citySupport) {
+    constructor(name, tribe, citySupport) {
         this.name = name;
-        this.health = health;
-        this.damage = damage;
-        this.defence = defence
-        this.movement = movement;
-        this.range = range;
-        this.skills = skills;
+        this.tribe = tribe;
         this.citySupport = citySupport;
+        this.maxHealth = null;
+        this.health = null;
+        this.damage = null;
+        this.defence = null
+        this.movement = null;
+        this.range = null;
+        this.skills = [];
         this.kills = 0;
+        this.tile = null;
         this.promoted = false;
+        this.canMove = false;
+        this.canAttack = false;
+        this.carrying = null;
+        this.type = null;
+
+        this.createUnit();
+    }
+
+    get unitAsset() {
+        return `./assets/Units/${this.citySupport.tribe.name}/Default/${this.citySupport.tribe.name}_Default_${game.capitalise(this.name)}.png`;
+    }
+
+    get validMovement() {
+        // console.log(this.tile);
+        let array = [];
+        if (this.canMove) {
+            array = this.floodFill(this.tile, []);
+            array.shift();
+            array.forEach((tile, i) => {
+                if (tile.unit != null) {
+                    array.splice(i, 1);
+                }
+            })
+        }
+        return array;
+    }
+
+    floodFill(tile, visitedTiles) {
+        if (tile.traversable(this) && !visitedTiles.includes(tile) && Math.abs(this.tile.x - tile.x) <= this.movement && Math.abs(this.tile.y - tile.y) <= this.movement) {
+            visitedTiles.push(tile);
+            // console.log(tile, visitedTiles);
+            if (tile.y - 1 >= 0) {
+                visitedTiles = this.floodFill(game.grid[tile.y - 1][tile.x], visitedTiles);
+            }
+            if (tile.x - 1 >= 0) {
+                visitedTiles = this.floodFill(game.grid[tile.y][tile.x - 1], visitedTiles);
+            }
+            if (tile.y + 1 <= game.gridSize - 1) {
+                visitedTiles = this.floodFill(game.grid[tile.y + 1][tile.x], visitedTiles);
+            }
+            if (tile.x + 1 <= game.gridSize - 1) {
+                visitedTiles = this.floodFill(game.grid[tile.y][tile.x + 1], visitedTiles);
+            }
+        }
+        return visitedTiles;
+    }
+
+    createUnit() {
+        this.tribe.units.push(this);
+
+        switch(this.name) {
+            // Land
+            case 'warrior':
+                this.price = 2;
+                this.health = 10;
+                this.damage = 2;
+                this.defence = 2;
+                this.movement = 1;
+                this.range = 1;
+                this.skills = ['dash', 'fortify'];
+                this.type = 'melee';
+                break;
+            case 'archer':
+                this.price = 3;
+                this.health = 10;
+                this.damage = 2;
+                this.defence = 1;
+                this.movement = 1;
+                this.range = 2;
+                this.skills = ['dash', 'fortify'];
+                this.type = 'ranged';
+                break;
+            case 'defender':
+                this.price = 3;
+                this.health = 15;
+                this.damage = 1;
+                this.defence = 3;
+                this.movement = 1;
+                this.range = 1;
+                this.skills = ['fortify'];
+                this.type = 'melee';
+                break;
+            case 'rider':
+                this.price = 3;
+                this.health = 10;
+                this.damage = 2;
+                this.defence = 1;
+                this.movement = 2;
+                this.range = 1;
+                this.skills = ['dash', 'escape', 'fortify'];
+                this.type = 'melee';
+                break;
+            case 'cloak':
+                this.price = 8;
+                this.health = 5;
+                this.damage = 0;
+                this.defence = .5;
+                this.movement = 2;
+                this.range = 1;
+                this.skills = ['hide', 'sneak', 'infiltrate', 'dash'];
+                this.type = 'melee';
+                break;
+            case 'dagger':
+                this.price = null;
+                this.health = 10;
+                this.damage = 2;
+                this.defence = 2;
+                this.movement = 1;
+                this.range = 1;
+                this.skills = ['dash', 'surprise', 'independent'];
+                this.type = 'melee';
+                break;
+            case 'mindBender':
+                this.price = 5;
+                this.health = 10;
+                this.damage = 0;
+                this.defence = 1;
+                this.movement = 1;
+                this.range = 1;
+                this.skills = ['heal', 'convert', 'detect'];
+                this.type = 'melee';
+                break;
+            case 'swordsman':
+                this.price = 5;
+                this.health = 15;
+                this.damage = 3;
+                this.defence = 3;
+                this.movement = 1;
+                this.range = 1;
+                this.skills = ['dash', 'fortify'];
+                this.type = 'melee';
+                break;
+            case 'catapult':
+                this.price = 8;
+                this.health = 10;
+                this.damage = 4;
+                this.defence = 0;
+                this.movement = 1;
+                this.range = 3;
+                this.skills = [];
+                this.type = 'ranged';
+                break;
+            case 'knight':
+                this.price = 8;
+                this.health = 10;
+                this.damage = 3.5;
+                this.defence = 1;
+                this.movement = 3;
+                this.range = 1;
+                this.skills = ['dash', 'persist', 'fortify'];
+                this.type = 'melee';
+                break;
+            case 'giant':
+                this.price = null;
+                this.health = 40;
+                this.damage = 5;
+                this.defence = 4;
+                this.movement = 1;
+                this.range = 1;
+                this.skills = [];
+                this.type = 'melee';
+                break;
+            case 'boat':
+                this.price = null;
+                this.health = null;
+                this.damage = 1;
+                this.defence = 1;
+                this.movement = 2;
+                this.range = 2;
+                this.skills = ['dash', 'carry', 'float'];
+                this.type = 'ranged';
+                break;
+            case 'ship':
+                this.price = 5;
+                this.health = null;
+                this.damage = 2;
+                this.defence = 2;
+                this.movement = 3;
+                this.range = 2;
+                this.skills = ['dash', 'carry', 'float'];
+                this.type = 'ranged';
+                break;
+            case 'battleship':
+                this.price = 15;
+                this.health = null;
+                this.damage = 4;
+                this.defence = 3;
+                this.movement = 3;
+                this.range = 2;
+                this.skills = ['dash', 'scout', 'carry', 'float'];
+                this.type = 'ranged';
+                break;
+            case 'dinghy':
+                this.price = null;
+                this.health = 5;
+                this.damage = 0;
+                this.defence = .5;
+                this.movement = 2;
+                this.range = 1;
+                this.skills = ['carry', 'float', 'hide', 'sneak', 'infiltrate'];
+                this.type = 'melee';
+                break;
+            case 'pirate':
+                this.price = null;
+                this.health = 10;
+                this.damage = 2;
+                this.defence = 2;
+                this.movement = 1;
+                this.range = 1;
+                this.skills = ['dash', 'suprise', 'independent'];
+                this.type = 'melee';
+                break;
+        }
+        this.maxHealth = this.health;
     }
 }
 
@@ -624,7 +900,130 @@ const barActions = [
         price: 0,
         techRequired: 'construction',
         asset: ''
-    }
+    },
+    // Units
+    {
+        name: 'warrior',
+        displayName: 'Warrior',
+        type: 'unit',
+        price: 2,
+        techRequired: 'default',
+        asset: ''
+    },
+    {
+        name: 'archer',
+        displayName: 'Archer',
+        type: 'unit',
+        price: 3,
+        techRequired: 'archery',
+        asset: ''
+    },
+    {
+        name: 'defender',
+        displayName: 'Defender',
+        type: 'unit',
+        price: 3,
+        techRequired: 'strategy',
+        asset: ''
+    },
+    {
+        name: 'rider',
+        displayName: 'Rider',
+        type: 'unit',
+        price: 3,
+        techRequired: 'riding',
+        asset: ''
+    },
+    {
+        name: 'cloak',
+        displayName: 'Cloak',
+        type: 'unit',
+        price: 8,
+        techRequired: 'diplomacy',
+        asset: ''
+    },
+    {
+        name: 'mindBender',
+        displayName: 'Mind Bender',
+        type: 'unit',
+        price: 5,
+        techRequired: 'philosophy',
+        asset: ''
+    },
+    {
+        name: 'swordsman',
+        displayName: 'Swordsman',
+        type: 'unit',
+        price: 5,
+        techRequired: 'smithery',
+        asset: ''
+    },
+    {
+        name: 'catapult',
+        displayName: 'Catapult',
+        type: 'unit',
+        price: 8,
+        techRequired: 'mathematics',
+        asset: ''
+    },
+    {
+        name: 'knight',
+        displayName: 'Knight',
+        type: 'unit',
+        price: 8,
+        techRequired: 'chivalry',
+        asset: ''
+    },
+    // Naval
+    {
+        name: 'ship',
+        displayName: 'Ship',
+        type: 'unitUpgrade',
+        price: 5,
+        techRequired: 'sailing',
+        asset: ''
+    },
+    {
+        name: 'battleship',
+        displayName: 'Battleship',
+        type: 'unitUpgrade',
+        price: 15,
+        techRequired: 'navigation',
+        asset: ''
+    },
+    // Actions
+    {
+        name: 'recover',
+        displayName: 'Recover',
+        type: 'unitAction',
+        price: 0,
+        techRequired: 'default',
+        asset: ''
+    },
+    {
+        name: 'disband',
+        displayName: 'Disband',
+        type: 'unitAction',
+        price: 0,
+        techRequired: 'freeSpirit',
+        asset: ''
+    },
+    {
+        name: 'healOthers',
+        displayName: 'Heal Others',
+        type: 'unitAction',
+        price: 0,
+        techRequired: 'default',
+        asset: ''
+    },
+    {
+        name: 'captureCity',
+        displayName: 'Capture City',
+        type: 'unitAction',
+        price: 0,
+        techRequired: 'default',
+        asset: ''
+    },
 ];
 
 // Centroid
